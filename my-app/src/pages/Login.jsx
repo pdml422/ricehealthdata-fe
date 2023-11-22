@@ -14,6 +14,9 @@ const Wrapper = styled.section`
   h1 {
     text-align: center;
   }
+  .login-form-forgot {
+    float: right;
+  }
 `
 
 const StyledForm = styled(Form)`
