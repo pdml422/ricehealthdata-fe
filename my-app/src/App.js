@@ -1,18 +1,13 @@
-import React from "react";
-import { Routes, Route } from 'react-router-dom';
-import RegisterPage from "./Pages/Register";
-import LoginPage from "./Pages/Login";
-
+import './App.css'
+import { BrowserRouter } from 'react-router-dom'
+import { AllRoutes } from './routes'
 
 function App() {
   return (
-      <div className="form">
-        <Routes>
-          <Route path="/register" element={<RegisterPage/>}/>
-          <Route path="/login" element={<LoginPage/>}/>
-        </Routes>
-      </div>
-  );
+    <BrowserRouter>
+      <AllRoutes />
+    </BrowserRouter>
+  )
 }
 
-export default App;
+export default App
