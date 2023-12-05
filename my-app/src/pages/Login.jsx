@@ -1,8 +1,10 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { LockOutlined, UserOutlined } from '@ant-design/icons'
-import { Button, Card, Checkbox, Form, Input } from 'antd'
+import { Button, Card, Checkbox, Form, Input, notification } from 'antd'
 import styled from 'styled-components'
+import { login } from "../services"
+import { useCookies } from 'react-cookie'
 
 const Wrapper = styled.section`
   min-height: 100vh;
@@ -13,9 +15,6 @@ const Wrapper = styled.section`
 
   h1 {
     text-align: center;
-  }
-  .login-form-forgot {
-    float: right;
   }
 `
 
@@ -29,69 +28,82 @@ const StyledForm = styled(Form)`
 `
 
 const Login = () => {
-  const onFinish = (values) => {
-    console.log('Received values of form: ', values)
+  const navigate = useNavigate()
+  const [cookies, setCookie] = useCookies(['accessToken'])
+
+  console.log(cookies)
+
+  const onFinish = async (values) => {
+    const res = await login(values)
+    if (res.data) {
+      notification.success('Login successfully')
+      navigate('/home')
+      // Save token
+      setCookie('accessToken', res.data.accessToken)
+    } else {
+      notification.error('Login failed')
+    }
   }
 
   return (
-    <Wrapper>
-      <Card>
-        <h1>Login</h1>
-        <StyledForm
-          name="normal_login"
-          className="login-form"
-          initialValues={{ remember: true }}
-          onFinish={onFinish}
-        >
-          <Form.Item
-            name="username"
-            rules={[{ required: true, message: 'Please input your Username!' }]}
+      <Wrapper>
+        <Card>
+          <h1>Login</h1>
+          <StyledForm
+              name="normal_login"
+              className="login-form"
+              initialValues={{ remember: true }}
+              onFinish={onFinish}
           >
-            <Input
-              prefix={<UserOutlined className="site-form-item-icon" />}
-              placeholder="Username"
-            />
-          </Form.Item>
-          <Form.Item
-            name="password"
-            rules={[{ required: true, message: 'Please input your Password!' }]}
-          >
-            <Input
-              prefix={<LockOutlined className="site-form-item-icon" />}
-              type="password"
-              placeholder="Password"
-            />
-          </Form.Item>
-          <Form.Item>
             <Form.Item
-              name="remember"
-              valuePropName="checked"
-              noStyle
+                name="username"
+                rules={[{ required: true, message: 'Please input your Username!' }]}
             >
-              <Checkbox>Remember me</Checkbox>
+              <Input
+                  prefix={<UserOutlined className="site-form-item-icon" />}
+                  placeholder="Username"
+              />
+            </Form.Item>
+            <Form.Item
+                name="password"
+                rules={[{ required: true, message: 'Please input your Password!' }]}
+            >
+              <Input
+                  prefix={<LockOutlined className="site-form-item-icon" />}
+                  type="password"
+                  placeholder="Password"
+              />
+            </Form.Item>
+            <Form.Item>
+              <Form.Item
+                  name="remember"
+                  valuePropName="checked"
+                  noStyle
+              >
+                <Checkbox>Remember me</Checkbox>
+              </Form.Item>
+
+              <a
+                  className="login-form-forgot"
+                  href=""
+              >
+                Forgot password
+              </a>
             </Form.Item>
 
-            <a
-              className="login-form-forgot"
-              href=""
-            >
-              Forgot password
-            </a>
-          </Form.Item>
-
-          <Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              className="login-form-button"
-            >
-              Log in
-            </Button>
-            Don't have an account <Link to="/register">Sign Up</Link>
-          </Form.Item>
-        </StyledForm>
-      </Card>
-    </Wrapper>
+            <Form.Item>
+              <Button
+                  type="primary"
+                  htmlType="submit"
+                  className="login-form-button"
+              >
+                Log in
+              </Button>
+              Don't have an account <Link to="/register">Sign Up</Link>
+            </Form.Item>
+          </StyledForm>
+        </Card>
+      </Wrapper>
   )
 }
 
