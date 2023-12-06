@@ -32,15 +32,15 @@ const FullLayout = () => {
   const [collapsed, setCollapsed] = useState(true)
   const user = sessionStorage.getItem('user')
 
-  // if (!user) {
-  //   return (
-  //     <Navigate
-  //       to={'/login'}
-  //       state={{ from: location }}
-  //       replace
-  //     />
-  //   )
-  // }
+  if (!user) {
+    return (
+      <Navigate
+        to={'/login'}
+        state={{ from: location }}
+        replace
+      />
+    )
+  }
 
   return (
     <StyledLayout>
