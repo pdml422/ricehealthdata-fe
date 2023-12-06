@@ -33,17 +33,17 @@ const Login = () => {
 
   console.log(cookies)
 
-  const onFinish = async (values) => {
-    const res = await login(values)
-    if (res.data) {
-      notification.success('Login successfully')
-      navigate('/home')
-      // Save token
-      setCookie('accessToken', res.data.accessToken)
-    } else {
-      notification.error('Login failed')
+    const onFinish = async (values) => {
+        try {
+            const { data } = await login(values)
+            setCookie('accessToken', data.accessToken)
+            navigate('/')
+        } catch (e) {
+            notification.error({
+                message: 'Error'
+            })
+        }
     }
-  }
 
   return (
       <Wrapper>

@@ -3,7 +3,7 @@ import { APICore } from './apiCore';
 const api = new APICore();
 
 function login(params) {
-    const baseUrl = '/login/';
+    const baseUrl = '/auth/login';
     return api.post(`${baseUrl}`, params);
 }
 
@@ -13,7 +13,7 @@ function logout() {
 }
 
 function signup(params) {
-    const baseUrl = '/register/';
+    const baseUrl = '/auth/register';
     return api.post(`${baseUrl}`, params);
 }
 
