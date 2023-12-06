@@ -29,7 +29,7 @@ const StyledLayout = styled(Layout)`
 const FullLayout = () => {
   let location = useLocation()
   const [current, setCurrent] = useState('home')
-  const [collapsed, setCollapsed] = useState(false)
+  const [collapsed, setCollapsed] = useState(true)
   const user = sessionStorage.getItem('user')
 
   // if (!user) {
@@ -50,10 +50,10 @@ const FullLayout = () => {
         collapsed={collapsed}
       >
         <StyledLogo>
-          <img
-            src="logo.png"
-            alt="Logo"
-          />
+          {/*<img*/}
+          {/*  src="logo.png"*/}
+          {/*  alt="Logo"*/}
+          {/*/>*/}
         </StyledLogo>
         <Menu
           theme="dark"

@@ -1,105 +1,75 @@
-import { Button, Table } from 'antd'
-import { useEffect, useState } from 'react'
-import axios from 'axios'
-
-const { Column } = Table
-
-const About = () => {
-  const columns = [
+import React from 'react';
+import { Space, Table, Tag } from 'antd';
+const columns = [
     {
-      title: 'Name',
-      dataIndex: 'name'
+        title: 'Name',
+        dataIndex: 'name',
+        key: 'name',
+        render: (text) => <a>{text}</a>,
     },
     {
-      title: 'Age',
-      dataIndex: 'age'
+        title: 'Age',
+        dataIndex: 'age',
+        key: 'age',
     },
     {
-      title: 'Address',
-      dataIndex: 'address'
-    }
-  ]
-  const data = []
-  for (let i = 0; i < 46; i++) {
-    data.push({
-      key: i,
-      name: `Edward King ${i}`,
-      age: 32,
-      address: `London, Park Lane no. ${i}`
-    })
-  }
-  const [selectedRowKeys, setSelectedRowKeys] = useState([])
-  const [loading, setLoading] = useState(false)
-  const start = () => {
-    setLoading(true)
-    // ajax request after empty completing
-    setTimeout(() => {
-      setSelectedRowKeys([])
-      setLoading(false)
-    }, 1000)
-  }
-  const onSelectChange = (newSelectedRowKeys) => {
-    console.log('selectedRowKeys changed: ', newSelectedRowKeys)
-    setSelectedRowKeys(newSelectedRowKeys)
-  }
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: onSelectChange
-  }
-  const hasSelected = selectedRowKeys.length > 0
-
-  const [posts, setPosts] = useState([])
-  const [isLoading, setIsLoading] = useState(false)
-
-  const getPostList = async () => {
-    setIsLoading(true)
-    try {
-      await axios.get('https://jsonplaceholder.typicode.com/posts').then((response) => {
-        setIsLoading(false)
-        setPosts(response.data)
-      })
-    } catch (error) {
-      console.log(error)
-      setIsLoading(false)
-    }
-  }
-
-  useEffect(() => {
-    getPostList()
-  }, [])
-
-  return (
-    <div className="about-page">
-      <Table
-        dataSource={posts}
-        pagination={false}
-        rowKey={(obj) => obj.id}
-        // onChange={onTableChange}
-        loading={isLoading}
-      >
-        <Column
-          title="ID"
-          key="id"
-          dataIndex="id"
-          render={(id) => <p>{id}</p>}
-        />
-        <Column
-          title={'Title'}
-          key="title"
-          dataIndex="title"
-          sorter={(a, b) => a.title.localeCompare(b.title)}
-          render={(title) => <p>{title}</p>}
-        />
-        <Column
-          title={'Body'}
-          key="body"
-          dataIndex="body"
-          sorter={(a, b) => a.title.localeCompare(b.title)}
-          render={(body) => <p>{body}</p>}
-        />
-      </Table>
-    </div>
-  )
-}
-
-export default About
+        title: 'Address',
+        dataIndex: 'address',
+        key: 'address',
+    },
+    {
+        title: 'Tags',
+        key: 'tags',
+        dataIndex: 'tags',
+        render: (_, { tags }) => (
+            <>
+                {tags.map((tag) => {
+                    let color = tag.length > 5 ? 'geekblue' : 'green';
+                    if (tag === 'loser') {
+                        color = 'volcano';
+                    }
+                    return (
+                        <Tag color={color} key={tag}>
+                            {tag.toUpperCase()}
+                        </Tag>
+                    );
+                })}
+            </>
+        ),
+    },
+    {
+        title: 'Action',
+        key: 'action',
+        render: (_, record) => (
+            <Space size="middle">
+                <a>Edit {record.name}</a>
+                <a>Delete</a>
+            </Space>
+        ),
+    },
+];
+const data = [
+    {
+        key: '1',
+        name: 'John Brown',
+        age: 32,
+        address: 'New York No. 1 Lake Park',
+        tags: ['nice', 'developer'],
+    },
+    {
+        key: '2',
+        name: 'Jim Green',
+        age: 42,
+        address: 'London No. 1 Lake Park',
+        tags: ['loser'],
+    },
+    {
+        key: '3',
+        name: 'Joe Black',
+        age: 32,
+        address: 'Sydney No. 1 Lake Park',
+        tags: ['cool', 'teacher'],
+    },
+];
+const About = () => <Table columns={columns} dataSource={data} />;
+export default About;
