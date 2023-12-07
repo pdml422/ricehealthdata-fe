@@ -5,11 +5,13 @@ import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   ProfileOutlined,
-  UserOutlined
+  UserOutlined,
+    ArrowLeftOutlined
 } from '@ant-design/icons'
 import { Layout, Menu, Button } from 'antd'
 import { Navigate, Outlet, Link } from 'react-router-dom'
 import styled from 'styled-components'
+import {logout} from "../services";
 
 const { Header, Sider, Content } = Layout
 
@@ -19,6 +21,13 @@ const StyledLogo = styled.figure`
     width: 100%;
   }
 `
+
+const logoutStyle = {
+    position: 'absolute',
+    bottom: 0,
+    color: 'red',
+
+};
 
 const StyledLayout = styled(Layout)`
   .ant-menu-item {
@@ -68,7 +77,7 @@ const FullLayout = () => {
               About
             </Menu.Item>
           </Link>
-          <Link to="/posts">
+            <Link to="/posts">
             <Menu.Item
               eventKey="posts"
               icon={<ProfileOutlined />}
@@ -77,6 +86,15 @@ const FullLayout = () => {
               Posts
             </Menu.Item>
           </Link>
+            <Link to="/login">
+                <Menu.Item style={logoutStyle}
+                    eventKey="logout"
+                    icon={<ArrowLeftOutlined />}
+                           onClick={() => setCurrent('logout')}
+                >
+                    Logout
+                </Menu.Item>
+            </Link>
         </Menu>
       </Sider>
       <Layout>
