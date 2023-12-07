@@ -36,12 +36,13 @@ const Login = () => {
     const onFinish = async (values) => {
         try {
             const { data } = await login(values)
-            setCookie('accessToken', data.accessToken)
+            setCookie('accessToken', data.token)
             navigate('/')
         } catch (e) {
             notification.error({
-                message: 'Error'
+                message: 'Account not exist'
             })
+            navigate('/login')
         }
     }
 
