@@ -37,6 +37,7 @@ const Login = () => {
         try {
             const { data } = await login(values)
             setCookie('accessToken', data.token)
+            localStorage.setItem('accessToken', data.token)
             navigate('/')
         } catch (e) {
             notification.error({

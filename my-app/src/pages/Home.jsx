@@ -1,5 +1,7 @@
-import React from 'react';
+    import React from 'react';
+    import {getUsers} from "../services/user";
 const Home = () => {
+    getUsers()
     return (
         <div>
             <h1>Home</h1>

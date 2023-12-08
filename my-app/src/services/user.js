@@ -1,11 +1,19 @@
 import { APICore } from './apiCore';
+import axios from "axios";
 
 const api = new APICore();
 const baseUrl = 'http://localhost:8080'
 
 const getUsers = () => {
-    const url = baseUrl + '/users';
-    return api.get(url);
+    try {
+        const configHeader = {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        };
+        const response =  axios.get('http://localhost:8080/users', configHeader);
+        console.log(response)
+    } catch (error) {}
 }
 
 const getUserDetail = ({ userId }) => {
