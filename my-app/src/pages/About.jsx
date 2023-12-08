@@ -1,42 +1,46 @@
-import React from 'react';
-import { Space, Table, Tag } from 'antd';
+import React, {useEffect, useState} from 'react';
+import { Space, Table } from 'antd';
+import axios from "axios";
 const columns = [
     {
-        title: 'Name',
-        dataIndex: 'name',
-        key: 'name',
+        title: 'ID',
+        dataIndex: 'id',
         render: (text) => <a>{text}</a>,
     },
     {
-        title: 'Age',
-        dataIndex: 'age',
-        key: 'age',
+        title: 'Username',
+        dataIndex: 'username',
+        render: (text) => <a>{text}</a>,
     },
     {
-        title: 'Address',
-        dataIndex: 'address',
-        key: 'address',
+        title: 'Email',
+        dataIndex: 'email',
+        render: (text) => <a>{text}</a>,
     },
     {
-        title: 'Tags',
-        key: 'tags',
-        dataIndex: 'tags',
-        render: (_, { tags }) => (
-            <>
-                {tags.map((tag) => {
-                    let color = tag.length > 5 ? 'geekblue' : 'green';
-                    if (tag === 'loser') {
-                        color = 'volcano';
-                    }
-                    return (
-                        <Tag color={color} key={tag}>
-                            {tag.toUpperCase()}
-                        </Tag>
-                    );
-                })}
-            </>
-        ),
+        title: 'Role',
+        dataIndex: 'role',
     },
+    // {
+    //     title: 'Tags',
+    //     key: 'tags',
+    //     dataIndex: 'tags',
+    //     render: (_, { tags }) => (
+    //         <>
+    //             {tags.map((tag) => {
+    //                 let color = tag.length > 5 ? 'geekblue' : 'green';
+    //                 if (tag === 'loser') {
+    //                     color = 'volcano';
+    //                 }
+    //                 return (
+    //                     <Tag color={color} key={tag}>
+    //                         {tag.toUpperCase()}
+    //                     </Tag>
+    //                 );
+    //             })}
+    //         </>
+    //     ),
+    // },
     {
         title: 'Action',
         key: 'action',
@@ -48,28 +52,30 @@ const columns = [
         ),
     },
 ];
-const data = [
-    {
-        key: '1',
-        name: 'John Brown',
-        age: 32,
-        address: 'New York No. 1 Lake Park',
-        tags: ['nice', 'developer'],
-    },
-    {
-        key: '2',
-        name: 'Jim Green',
-        age: 42,
-        address: 'London No. 1 Lake Park',
-        tags: ['loser'],
-    },
-    {
-        key: '3',
-        name: 'Joe Black',
-        age: 32,
-        address: 'Sydney No. 1 Lake Park',
-        tags: ['cool', 'teacher'],
-    },
-];
-const About = () => <Table columns={columns} dataSource={data} />;
+
+const About = () => {
+    const [data, setData] = useState([]);
+
+    const getUsers = async () => {
+        try {
+            const configHeader = {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+                },
+            };
+            const response = await axios.get('http://localhost:8080/users', configHeader);
+            setData(response.data); // Assuming the response data is an array
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
+    useEffect(() => {
+        // Call the getUsers function when the component mounts
+        getUsers();
+    }, []); // The empty dependency array ensures that this effect runs once when the component mounts
+
+    return <Table columns={columns} dataSource={data} />;
+};
+
 export default About;
