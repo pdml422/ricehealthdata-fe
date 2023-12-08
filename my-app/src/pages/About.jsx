@@ -44,10 +44,10 @@ const columns = [
     {
         title: 'Action',
         key: 'action',
-        render: (_, record) => (
+        render: (_) => (
             <Space size="middle">
-                <a>Edit {record.name}</a>
-                <a>Delete</a>
+                <a>Edit</a>
+                <a style={{color: "red"}}>Delete</a>
             </Space>
         ),
     },
