@@ -4,10 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7d1021a2-cd4a-413e-be5b-ce6353c6c7cc" name="Changes" comment="LoginApi commit">
+    <list default="true" id="7d1021a2-cd4a-413e-be5b-ce6353c6c7cc" name="Changes" comment="ListUsers table">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/layouts/FullLayout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/layouts/FullLayout.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/Login.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Login.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/About.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/About.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Home.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,7 +93,8 @@
       <workItem from="1701865975851" duration="10404000" />
       <workItem from="1701880186648" duration="202000" />
       <workItem from="1701964437856" duration="22000" />
-      <workItem from="1701964471870" duration="3014000" />
+      <workItem from="1701964471870" duration="17151000" />
+      <workItem from="1702017494054" duration="9471000" />
     </task>
     <task id="LOCAL-00001" summary="Login/Register FE commit">
       <option name="closed" value="true" />
@@ -142,7 +144,23 @@
       <option name="project" value="LOCAL" />
       <updated>1701879706349</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="LoginApi commit">
+      <option name="closed" value="true" />
+      <created>1701968513801</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1701968513801</updated>
+    </task>
+    <task id="LOCAL-00008" summary="ListUsers table">
+      <option name="closed" value="true" />
+      <created>1702048569490</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1702048569490</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -155,6 +173,18 @@
     <MESSAGE value="Change table type" />
     <MESSAGE value="commit FE" />
     <MESSAGE value="LoginApi commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="LoginApi commit" />
+    <MESSAGE value="ListUsers table" />
+    <option name="LAST_COMMIT_MESSAGE" value="ListUsers table" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/services/apiCore.js</url>
+          <line>66</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
