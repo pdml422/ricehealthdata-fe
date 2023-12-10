@@ -131,6 +131,7 @@ const About = () => {
                                         role: value,
                                     }))
                                 }
+                                style={{ width: '150px', height: '30px' }}
                             >
                                 <Option value="USER">USER</Option>
                                 <Option value="ADMIN">ADMIN</Option>
