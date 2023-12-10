@@ -58,6 +58,20 @@ const Register = () => {
             <Input />
           </Form.Item>
 
+            <Form.Item
+                name="username"
+                label="Username"
+                rules={[
+                    {
+                        required: true,
+                        message: 'Please input your username!',
+                        whitespace: true
+                    }
+                ]}
+            >
+                <Input />
+            </Form.Item>
+
           <Form.Item
             name="email"
             label="E-mail"
@@ -112,23 +126,6 @@ const Register = () => {
             ]}
           >
             <Input.Password />
-          </Form.Item>
-
-          <Form.Item
-            name="phone"
-            label="Phone Number"
-            rules={[
-              {
-                required: true,
-                message: 'Please input your phone number!'
-              }
-            ]}
-          >
-            <Input
-              style={{
-                width: '100%'
-              }}
-            />
           </Form.Item>
 
           <Form.Item
