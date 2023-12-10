@@ -1,17 +1,23 @@
-import React, {useEffect, useState} from 'react';
-import {Form, Modal, Space, Table, Input} from 'antd';
-import axios from "axios";
-
+import React, { useEffect, useState } from 'react';
+import { Table, Space, Modal, Input, Form } from 'antd';
+import CircJSON from 'circular-json';
+import axios from 'axios';
 
 const About = () => {
-    const [data, setData] = useState();
+    const [data, setData] = useState([]);
+    const [selectedUser, setSelectedUser] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const showModal = () => {
+
+    const showModal = (user) => {
+        setSelectedUser(user);
         setIsModalOpen(true);
     };
-    const handleOk = () => {
+
+    const handleOk = async () => {
         setIsModalOpen(false);
+        await updateUser(selectedUser);
     };
+
     const handleCancel = () => {
         setIsModalOpen(false);
     };
@@ -24,16 +30,29 @@ const About = () => {
                 },
             };
             const response = await axios.get('http://localhost:8080/users', configHeader);
-            setData(response.data); // Assuming the response data is an array
+            setData(response.data);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
     };
 
+    const updateUser = async (user) => {
+        try {
+            const configHeader = {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+                },
+            };
+            await axios.put(`http://localhost:8080/users/${user.id}`, user, configHeader);
+            await getUsers();
+        } catch (error) {
+            console.error('Error updating user:', error);
+        }
+    };
+
     useEffect(() => {
-        // Call the getUsers function when the component mounts
         getUsers();
-    }, []); // The empty dependency array ensures that this effect runs once when the component mounts
+    }, []);
 
     const columns = [
         {
@@ -49,36 +68,20 @@ const About = () => {
             dataIndex: 'email',
         },
         {
+            title: 'Name',
+            dataIndex: 'name',
+        },
+        {
             title: 'Role',
             dataIndex: 'role',
         },
-        // {
-        //     title: 'Tags',
-        //     key: 'tags',
-        //     dataIndex: 'tags',
-        //     render: (_, { tags }) => (
-        //         <>
-        //             {tags.map((tag) => {
-        //                 let color = tag.length > 5 ? 'geekblue' : 'green';
-        //                 if (tag === 'loser') {
-        //                     color = 'volcano';
-        //                 }
-        //                 return (
-        //                     <Tag color={color} key={tag}>
-        //                         {tag.toUpperCase()}
-        //                     </Tag>
-        //                 );
-        //             })}
-        //         </>
-        //     ),
-        // },
         {
             title: 'Action',
             key: 'action',
-            render: () => (
+            render: (text, record) => (
                 <Space size="middle">
-                    <a onClick={showModal}>Edit </a>
-                    <a style={{color: "red"}}>Delete</a>
+                    <a onClick={() => showModal(record)}>Edit</a>
+                    <a style={{ color: 'red' }}>Delete</a>
                 </Space>
             ),
         },
@@ -86,40 +89,56 @@ const About = () => {
 
     return (
         <>
-        <Table columns={columns} dataSource={data}/>
-            <Modal title="Edit User" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-                <Form >
-                    <Form.Item
-                        label="Username"
-                        name="username"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please input your new username!',
-                            },
-                        ]}
-                    >
-                        <Input />
-                    </Form.Item>
-
-                    <Form.Item
-                        label="Email"
-                        name="Email"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please input your new Email!',
-                            },
-                        ]}
-                    >
-                        <Input Password />
-                    </Form.Item>
-                </Form>
-
-            </Modal>
+            <Table columns={columns} dataSource={data} />
+            {selectedUser && (
+                <Modal
+                    title="Edit User"
+                    visible={isModalOpen}
+                    onOk={handleOk}
+                    onCancel={handleCancel}
+                >
+                    {/* Display the details of the selected user in the modal */}
+                    <Form>
+                        <Form.Item label="Name" name="name">
+                            <Input
+                                value={selectedUser.name}
+                                onChange={(e) =>
+                                    setSelectedUser((prevUser) => ({
+                                        ...prevUser,
+                                        name: e.target.value,
+                                    }))
+                                }
+                            />
+                        </Form.Item>
+                        <Form.Item label="Email" name="email">
+                            <Input
+                                value={selectedUser.email}
+                                onChange={(e) =>
+                                    setSelectedUser((prevUser) => ({
+                                        ...prevUser,
+                                        email: e.target.value,
+                                    }))
+                                }
+                            />
+                        </Form.Item>
+                        <Form.Item label="Role" name="role">
+                            <Input
+                                value={selectedUser.role}
+                                onChange={(e) =>
+                                    setSelectedUser((prevUser) => ({
+                                        ...prevUser,
+                                        role: e.target.value,
+                                    }))
+                                }
+                            />
+                        </Form.Item>
+                        {/* Add other form fields for user details */}
+                    </Form>
+                </Modal>
+            )}
         </>
-    )
-
+    );
 };
 
 export default About;
+
