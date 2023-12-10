@@ -10,6 +10,7 @@ const About = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
+
     const showModal = (user) => {
         setSelectedUser(user);
         setIsModalOpen(true);
@@ -23,6 +24,7 @@ const About = () => {
     const handleOk = async () => {
         setIsModalOpen(false);
         await updateUser(selectedUser);
+        setSelectedUser(null);
     };
 
     const handleDeleteOk = async () => {
@@ -33,6 +35,7 @@ const About = () => {
     const handleCancel = () => {
         setIsModalOpen(false);
         setIsDeleteModalOpen(false);
+        setSelectedUser(null);
     };
 
     const getUsers = async () => {
@@ -136,6 +139,7 @@ const About = () => {
                     <Form>
                         <Form.Item label="Name" name="name">
                             <Input
+                                defaultValue={selectedUser.name}
                                 value={selectedUser.name}
                                 onChange={(e) =>
                                     setSelectedUser((prevUser) => ({
@@ -143,11 +147,11 @@ const About = () => {
                                         name: e.target.value,
                                     }))
                                 }
-                                defaultValue={selectedUser.name}
                             />
                         </Form.Item>
                         <Form.Item label="Email" name="email">
                             <Input
+                                defaultValue={selectedUser.email}
                                 value={selectedUser.email}
                                 onChange={(e) =>
                                     setSelectedUser((prevUser) => ({
@@ -155,11 +159,12 @@ const About = () => {
                                         email: e.target.value,
                                     }))
                                 }
-                                defaultValue={selectedUser.email}
+
                             />
                         </Form.Item>
                         <Form.Item label="Role" name="role">
                             <Select
+                                defaultValue={selectedUser.role}
                                 value={selectedUser.role}
                                 onChange={(value) =>
                                     setSelectedUser((prevUser) => ({
@@ -167,7 +172,7 @@ const About = () => {
                                         role: value,
                                     }))
                                 }
-                                defaultValue={selectedUser.role}
+
                                 style={{ width: '150px', height: '30px' }}
                             >
                                 <Option value="USER">USER</Option>
