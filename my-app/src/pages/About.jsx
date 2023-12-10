@@ -143,6 +143,7 @@ const About = () => {
                                         name: e.target.value,
                                     }))
                                 }
+                                defaultValue={selectedUser.name}
                             />
                         </Form.Item>
                         <Form.Item label="Email" name="email">
@@ -154,6 +155,7 @@ const About = () => {
                                         email: e.target.value,
                                     }))
                                 }
+                                defaultValue={selectedUser.email}
                             />
                         </Form.Item>
                         <Form.Item label="Role" name="role">
@@ -165,6 +167,7 @@ const About = () => {
                                         role: value,
                                     }))
                                 }
+                                defaultValue={selectedUser.role}
                                 style={{ width: '150px', height: '30px' }}
                             >
                                 <Option value="USER">USER</Option>
