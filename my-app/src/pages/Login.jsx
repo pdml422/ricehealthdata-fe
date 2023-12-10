@@ -38,6 +38,7 @@ const Login = () => {
             const { data } = await login(values)
             setCookie('accessToken', data.token)
             localStorage.setItem('accessToken', data.token)
+            sessionStorage.setItem('user', true)
             navigate('/')
         } catch (e) {
             notification.error({

@@ -4,11 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7d1021a2-cd4a-413e-be5b-ce6353c6c7cc" name="Changes" comment="ListUsers table">
+    <list default="true" id="7d1021a2-cd4a-413e-be5b-ce6353c6c7cc" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/layouts/FullLayout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/layouts/FullLayout.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/About.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/About.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/Home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Home.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Login.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Login.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/user.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,7 +95,9 @@
       <workItem from="1701880186648" duration="202000" />
       <workItem from="1701964437856" duration="22000" />
       <workItem from="1701964471870" duration="17151000" />
-      <workItem from="1702017494054" duration="9471000" />
+      <workItem from="1702017494054" duration="9814000" />
+      <workItem from="1702058365686" duration="12000" />
+      <workItem from="1702107479966" duration="14749000" />
     </task>
     <task id="LOCAL-00001" summary="Login/Register FE commit">
       <option name="closed" value="true" />
@@ -160,11 +163,30 @@
       <option name="project" value="LOCAL" />
       <updated>1702048569490</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="commit">
+      <option name="closed" value="true" />
+      <created>1702057213845</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1702057213845</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
@@ -174,7 +196,8 @@
     <MESSAGE value="commit FE" />
     <MESSAGE value="LoginApi commit" />
     <MESSAGE value="ListUsers table" />
-    <option name="LAST_COMMIT_MESSAGE" value="ListUsers table" />
+    <MESSAGE value="commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="commit" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

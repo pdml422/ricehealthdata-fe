@@ -41,6 +41,10 @@ const FullLayout = () => {
   const [collapsed, setCollapsed] = useState(true)
   const user = sessionStorage.getItem('user')
 
+    if (!user) {
+        return <Navigate to="/login" />
+    }
+
   return (
     <StyledLayout>
       <Sider
