@@ -1,17 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import {Table, Space, Modal, Input, Form, Select} from 'antd';
-import CircJSON from 'circular-json';
+import { Table, Space, Modal, Input, Form, Select, Button, notification } from 'antd';
 import axios from 'axios';
+
 const { Option } = Select;
 
 const About = () => {
     const [data, setData] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
     const showModal = (user) => {
         setSelectedUser(user);
         setIsModalOpen(true);
+    };
+
+    const showDeleteModal = (user) => {
+        setSelectedUser(user);
+        setIsDeleteModalOpen(true);
     };
 
     const handleOk = async () => {
@@ -19,8 +25,14 @@ const About = () => {
         await updateUser(selectedUser);
     };
 
+    const handleDeleteOk = async () => {
+        setIsDeleteModalOpen(false);
+        await deleteUser(selectedUser);
+    };
+
     const handleCancel = () => {
         setIsModalOpen(false);
+        setIsDeleteModalOpen(false);
     };
 
     const getUsers = async () => {
@@ -48,6 +60,26 @@ const About = () => {
             await getUsers();
         } catch (error) {
             console.error('Error updating user:', error);
+        }
+    };
+
+    const deleteUser = async (user) => {
+        try {
+            const configHeader = {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+                },
+            };
+            await axios.delete(`http://localhost:8080/users/${user.id}`, configHeader);
+            await getUsers();
+            notification.success({
+                message: 'User deleted successfully',
+            });
+        } catch (error) {
+            console.error('Error deleting user:', error);
+            notification.error({
+                message: 'Error deleting user',
+            });
         }
     };
 
@@ -82,7 +114,9 @@ const About = () => {
             render: (text, record) => (
                 <Space size="middle">
                     <a onClick={() => showModal(record)}>Edit</a>
-                    <a style={{ color: 'red' }}>Delete</a>
+                    <a style={{ color: 'red' }} onClick={() => showDeleteModal(record)}>
+                        Delete
+                    </a>
                 </Space>
             ),
         },
@@ -141,9 +175,19 @@ const About = () => {
                     </Form>
                 </Modal>
             )}
+
+            {selectedUser && (
+                <Modal
+                    title="Confirm Delete"
+                    visible={isDeleteModalOpen}
+                    onOk={handleDeleteOk}
+                    onCancel={handleCancel}
+                >
+                    <p>Are you sure you want to delete this user?</p>
+                </Modal>
+            )}
         </>
     );
 };
 
 export default About;
-
