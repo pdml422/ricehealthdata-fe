@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Space, Modal, Input, Form } from 'antd';
+import {Table, Space, Modal, Input, Form, Select} from 'antd';
 import CircJSON from 'circular-json';
 import axios from 'axios';
+const { Option } = Select;
 
 const About = () => {
     const [data, setData] = useState([]);
@@ -122,15 +123,18 @@ const About = () => {
                             />
                         </Form.Item>
                         <Form.Item label="Role" name="role">
-                            <Input
+                            <Select
                                 value={selectedUser.role}
-                                onChange={(e) =>
+                                onChange={(value) =>
                                     setSelectedUser((prevUser) => ({
                                         ...prevUser,
-                                        role: e.target.value,
+                                        role: value,
                                     }))
                                 }
-                            />
+                            >
+                                <Option value="USER">USER</Option>
+                                <Option value="ADMIN">ADMIN</Option>
+                            </Select>
                         </Form.Item>
                         {/* Add other form fields for user details */}
                     </Form>

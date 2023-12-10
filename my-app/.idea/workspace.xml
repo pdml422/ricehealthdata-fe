@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7d1021a2-cd4a-413e-be5b-ce6353c6c7cc" name="Changes" comment="Fix Login page">
+    <list default="true" id="7d1021a2-cd4a-413e-be5b-ce6353c6c7cc" name="Changes" comment="Edit Users function">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/About.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/About.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -98,7 +96,7 @@
       <workItem from="1702058365686" duration="12000" />
       <workItem from="1702107479966" duration="16290000" />
       <workItem from="1702209215548" duration="4000" />
-      <workItem from="1702215712794" duration="1777000" />
+      <workItem from="1702215712794" duration="2383000" />
     </task>
     <task id="LOCAL-00001" summary="Login/Register FE commit">
       <option name="closed" value="true" />
@@ -180,7 +178,15 @@
       <option name="project" value="LOCAL" />
       <updated>1702207554915</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Edit Users function">
+      <option name="closed" value="true" />
+      <created>1702218031513</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1702218031513</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -207,7 +213,8 @@
     <MESSAGE value="ListUsers table" />
     <MESSAGE value="commit" />
     <MESSAGE value="Fix Login page" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix Login page" />
+    <MESSAGE value="Edit Users function" />
+    <option name="LAST_COMMIT_MESSAGE" value="Edit Users function" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
