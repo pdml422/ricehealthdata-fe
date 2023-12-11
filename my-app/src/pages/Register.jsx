@@ -1,7 +1,8 @@
 import React from 'react'
 import { Button, Card, Checkbox, Form, Input } from 'antd'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
+import axios from "axios";
 
 const Wrapper = styled.section`
   min-height: 100vh;
@@ -29,10 +30,18 @@ const StyledForm = styled(Form)`
 `
 
 const Register = () => {
-  const [form] = Form.useForm()
+    const navigate = useNavigate()
+    const [form] = Form.useForm()
 
-  const onFinish = (values) => {
-    console.log('Received values of form: ', values)
+  const onFinish = async (values) => {
+      try {
+          const response = await axios.post('http://localhost:8080/auth/register', values);
+          console.log('Registion succesful:',response.data);
+          navigate('/login')
+      } catch (error) {
+          console.error('Error registering user:', error);
+          navigate('/register')
+      }
   }
 
   return (
