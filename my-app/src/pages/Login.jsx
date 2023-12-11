@@ -19,21 +19,18 @@ const Wrapper = styled.section`
 `
 
 const StyledForm = styled(Form)`
-  width: 300px;
+    width: 300px;
 
-  button {
-    width: 100%;
-    margin-bottom: 1rem;
-  }
+    button {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
 
-  .signup-link {
-    float: right;
-  }
 `
 
 const Login = () => {
     const navigate = useNavigate()
-    const [cookies, setCookie] = useCookies(['accessToken'])
+    const [, setCookie] = useCookies(['accessToken'])
 
     const onFinish = async (values) => {
         try {
@@ -44,7 +41,8 @@ const Login = () => {
             navigate('/')
         } catch (e) {
             notification.error({
-                message: 'Account not exist'
+                message: 'Error!',
+                error: e
             })
             navigate('/login')
         }
