@@ -5,6 +5,9 @@ import { Button, Card, Checkbox, Form, Input, notification } from 'antd'
 import styled from 'styled-components'
 import { login } from "../services"
 import { useCookies } from 'react-cookie'
+import axios from "axios";
+import {getUsers} from "../services/user";
+import { jwtDecode } from "jwt-decode"
 
 const Wrapper = styled.section`
   min-height: 100vh;
@@ -38,7 +41,15 @@ const Login = () => {
             setCookie('accessToken', data.token)
             localStorage.setItem('accessToken', data.token)
             sessionStorage.setItem('user', true)
-            navigate('/')
+            let decodedToken = jwtDecode(data.token);
+            // console.log(decodedToken);
+            if (decodedToken.groups[0] === 'ADMIN') {
+                navigate('/')
+            } else {
+                navigate('/users')
+            }
+            console.log(decodedToken.groups[0]);
+
         } catch (e) {
             notification.error({
                 message: 'Error!',

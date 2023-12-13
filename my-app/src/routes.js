@@ -2,6 +2,7 @@ import React, { Suspense } from 'react'
 import { useRoutes } from 'react-router-dom'
 import FullLayout from './layouts/FullLayout'
 import DefaultLayout from './layouts/DefaultLayout'
+import UserLayout from "./layouts/UserLayout";
 
 const LoginPage = React.lazy(() => import('./pages/Login'))
 const RegisterPage = React.lazy(() => import('./pages/Register'))
@@ -9,6 +10,9 @@ const RegisterPage = React.lazy(() => import('./pages/Register'))
 const HomePage = React.lazy(() => import('./pages/Home'))
 const AboutPage = React.lazy(() => import('./pages/About'))
 const PostPage = React.lazy(() => import('./pages/Post'))
+
+const UserHomePage = React.lazy(() => import('./pages/UserHome'))
+const UserPostPage = React.lazy(() => import('./pages/UserPost'))
 
 const loading = () => <div className="" />
 
@@ -47,6 +51,19 @@ const AllRoutes = () => {
         {
           path: '/posts',
           element: <LoadComponent component={PostPage} />
+        }
+      ]
+    },
+    {
+      element: <UserLayout />,
+      children: [
+        {
+          path: '/users',
+          element: <LoadComponent component={UserHomePage} />
+        },
+        {
+          path: '/users/posts',
+          element: <LoadComponent component={UserPostPage} />
         }
       ]
     }
