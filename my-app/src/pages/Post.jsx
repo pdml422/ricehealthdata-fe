@@ -1,166 +1,126 @@
-import { SearchOutlined } from '@ant-design/icons';
-import React, { useRef, useState } from 'react';
-import Highlighter from 'react-highlight-words';
-import { Button, Input, Space, Table } from 'antd';
-const data = [
-  {
-    key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-  },
-  {
-    key: '2',
-    name: 'Joe Black',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-  },
-  {
-    key: '3',
-    name: 'Jim Green',
-    age: 32,
-    address: 'Sydney No. 1 Lake Park',
-  },
-  {
-    key: '4',
-    name: 'Jim Red',
-    age: 32,
-    address: 'London No. 2 Lake Park',
-  },
+import React, { useState } from 'react';
+import { Table } from 'antd';
+import type { ColumnsType } from 'antd/es/table';
+
+interface DataType {
+    key: React.Key;
+    name: string;
+    age: number;
+    address: string;
+}
+
+const columns: ColumnsType<DataType> = [
+    {
+        title: 'Replicate',
+        width: 100,
+        dataIndex: 'name',
+        key: 'name',
+        fixed: 'left',
+    },
+    {
+        title: 'Sub-replicate',
+        width: 100,
+        dataIndex: 'age',
+        key: 'age',
+        fixed: 'left',
+    },
+    {
+        title: 'Date',
+        width: 120,
+        dataIndex: 'address',
+        key: 'age',
+        fixed: 'left',
+    },
+    {
+        title: 'Chlorophyll',
+        dataIndex: 'address',
+        key: '1',
+        width: 120,
+    },
+    {
+        title: 'Longitude',
+        dataIndex: 'address',
+        key: '2',
+        width: 120,
+    },
+    {
+        title: 'Latitude',
+        dataIndex: 'address',
+        key: '3',
+        width: 120,
+    },
+    {
+        title: 'P Conc',
+        dataIndex: 'address',
+        key: '4',
+        width: 120,
+    },
+    {
+        title: 'K Conc',
+        dataIndex: 'address',
+        key: '5',
+        width: 120,
+    },
+    {
+        title: 'N Conc',
+        dataIndex: 'address',
+        key: '6',
+        width: 120,
+    },
+    {
+        title: 'Wet Weight',
+        dataIndex: 'address',
+        key: '7',
+        width: 120,
+    },
+    {
+        title: 'Dried Weight',
+        dataIndex: 'address',
+        key: '8',
+        width: 120,
+    },
+    {
+        title: 'Moiture',
+        dataIndex: 'address',
+        key: '9',
+        width: 120,
+    },
+    { title: 'Digesion', dataIndex: 'address', key: '10', width: 120},
+    {
+        title: 'Action',
+        key: 'operation',
+        fixed: 'right',
+        width: 100,
+        render: () => <a>Edit</a>,
+    },
 ];
 
-const Post = () => {
-  const [searchText, setSearchText] = useState('');
-  const [searchedColumn, setSearchedColumn] = useState('');
-  const searchInput = useRef(null);
-  const handleSearch = (selectedKeys, confirm, dataIndex) => {
-    confirm();
-    setSearchText(selectedKeys[0]);
-    setSearchedColumn(dataIndex);
-  };
-  const handleReset = (clearFilters) => {
-    clearFilters();
-    setSearchText('');
-  };
-  const getColumnSearchProps = (dataIndex) => ({
-    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
-        <div
-            style={{
-              padding: 8,
-            }}
-            onKeyDown={(e) => e.stopPropagation()}
-        >
-          <Input
-              ref={searchInput}
-              placeholder={`Search ${dataIndex}`}
-              value={selectedKeys[0]}
-              onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-              onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
-              style={{
-                marginBottom: 8,
-                display: 'block',
-              }}
-          />
-          <Space>
-            <Button
-                type="primary"
-                onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
-                icon={<SearchOutlined />}
-                size="small"
-                style={{
-                  width: 90,
-                }}
-            >
-              Search
-            </Button>
-            <Button
-                onClick={() => clearFilters && handleReset(clearFilters)}
-                size="small"
-                style={{
-                  width: 90,
-                }}
-            >
-              Reset
-            </Button>
-            <Button
-                type="link"
-                size="small"
-                onClick={() => {
-                  confirm({
-                    closeDropdown: false,
-                  });
-                  setSearchText(selectedKeys[0]);
-                  setSearchedColumn(dataIndex);
-                }}
-            >
-              Filter
-            </Button>
-            <Button
-                type="link"
-                size="small"
-                onClick={() => {
-                  close();
-                }}
-            >
-              close
-            </Button>
-          </Space>
-        </div>
-    ),
-    filterIcon: (filtered) => (
-        <SearchOutlined
-            style={{
-              color: filtered ? '#1677ff' : undefined,
-            }}
+const data: DataType[] = [];
+for (let i = 0; i < 100; i++) {
+    data.push({
+        key: i,
+        name: `Ed ${i}`,
+        age: 32,
+        address: `4.99999 ${i}`,
+    });
+}
+
+const Post: React.FC = () => {
+    const [fixedTop] = useState(false);
+
+    return (
+        <Table
+            columns={columns}
+            dataSource={data}
+            scroll={{ x: 1500 }}
+            summary={() => (
+                <Table.Summary fixed={fixedTop ? 'top' : 'bottom'}>
+                </Table.Summary>
+            )}
+            // antd site header height
+            sticky={{ offsetHeader: 64 }}
         />
-    ),
-    onFilter: (value, record) =>
-        record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
-    onFilterDropdownOpenChange: (visible) => {
-      if (visible) {
-        setTimeout(() => searchInput.current?.select(), 100);
-      }
-    },
-    render: (text) =>
-        searchedColumn === dataIndex ? (
-            <Highlighter
-                highlightStyle={{
-                  backgroundColor: '#ffc069',
-                  padding: 0,
-                }}
-                searchWords={[searchText]}
-                autoEscape
-                textToHighlight={text ? text.toString() : ''}
-            />
-        ) : (
-            text
-        ),
-  });
-  const columns = [
-    {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-      width: '30%',
-      ...getColumnSearchProps('name'),
-    },
-    {
-      title: 'Age',
-      dataIndex: 'age',
-      key: 'age',
-      width: '20%',
-      ...getColumnSearchProps('age'),
-    },
-    {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
-      ...getColumnSearchProps('address'),
-      sorter: (a, b) => a.address.length - b.address.length,
-      sortDirections: ['descend', 'ascend'],
-    },
-  ];
-  return <Table columns={columns} dataSource={data} />;
+    );
 };
 
 export default Post

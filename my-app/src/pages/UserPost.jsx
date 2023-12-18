@@ -1,8 +1,7 @@
-import { SearchOutlined } from '@ant-design/icons';
-import React, { useRef, useState } from 'react';
-import Highlighter from 'react-highlight-words';
-import { Button, Input, Space, Table, Switch } from 'antd';
+import React, {useEffect, useState} from 'react';
+import { Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
+import axios from "axios";
 
 interface DataType {
     key: React.Key;
@@ -15,75 +14,75 @@ const columns: ColumnsType<DataType> = [
     {
         title: 'Replicate',
         width: 100,
-        dataIndex: 'name',
+        dataIndex: 'replicate',
         key: 'name',
         fixed: 'left',
     },
     {
         title: 'Sub-replicate',
         width: 100,
-        dataIndex: 'age',
+        dataIndex: 'sub-replicate',
         key: 'age',
         fixed: 'left',
     },
     {
         title: 'Date',
         width: 120,
-        dataIndex: 'address',
+        dataIndex: 'date',
         key: 'age',
         fixed: 'left',
     },
     {
-        title: 'Chlorophyll',
-        dataIndex: 'address',
+        title: 'Cholorophyll',
+        dataIndex: 'cholorophyll',
         key: '1',
         width: 120,
     },
     {
-        title: 'Longtitude',
-        dataIndex: 'address',
+        title: 'Longitude',
+        dataIndex: 'longitude',
         key: '2',
         width: 120,
     },
     {
         title: 'Latitude',
-        dataIndex: 'address',
+        dataIndex: 'latitude',
         key: '3',
         width: 120,
     },
     {
         title: 'P Conc',
-        dataIndex: 'address',
+        dataIndex: 'PConc',
         key: '4',
         width: 120,
     },
     {
         title: 'K Conc',
-        dataIndex: 'address',
+        dataIndex: 'KConc',
         key: '5',
         width: 120,
     },
     {
         title: 'N Conc',
-        dataIndex: 'address',
+        dataIndex: 'KConc',
         key: '6',
         width: 120,
     },
     {
         title: 'Wet Weight',
-        dataIndex: 'address',
+        dataIndex: 'wetWeight',
         key: '7',
         width: 120,
     },
     {
         title: 'Dried Weight',
-        dataIndex: 'address',
+        dataIndex: 'driedWeight',
         key: '8',
         width: 120,
     },
     {
         title: 'Moiture',
-        dataIndex: 'address',
+        dataIndex: 'moisture',
         key: '9',
         width: 120,
     },
@@ -97,32 +96,38 @@ const columns: ColumnsType<DataType> = [
     },
 ];
 
-const data: DataType[] = [];
-for (let i = 0; i < 100; i++) {
-    data.push({
-        key: i,
-        name: `Ed ${i}`,
-        age: 32,
-        address: `4.99999 ${i}`,
-    });
-}
+const UserPost = () => {
+    const [data, setData] = useState([]);
+    const [loading] = useState(true);
 
-const UserPost: React.FC = () => {
-    const [fixedTop, setFixedTop] = useState(false);
+    const getData = async () => {
+        try {
+            const configHeader = {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+                },
+            };
+            const response = await axios.get('http://localhost:8080/statistical/search', configHeader);
+            setData(response.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
+    useEffect(() => {
+        getData();
+    }, []);
 
     return (
         <Table
             columns={columns}
             dataSource={data}
+            loading={loading}
             scroll={{ x: 1500 }}
-            summary={() => (
-                <Table.Summary fixed={fixedTop ? 'top' : 'bottom'}>
-                </Table.Summary>
-            )}
             // antd site header height
             sticky={{ offsetHeader: 64 }}
         />
     );
 };
 
-export default UserPost
+export default UserPost;
