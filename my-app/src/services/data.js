@@ -10,7 +10,7 @@ const getData = () => {
             Authorization: `Bearer ${localStorage.getItem('accessToken')}`
         }
     };
-    return axios.get('http://localhost:8080/statistical/search', configHeader);
+    return axios.get('http://localhost:8080/statistical/searchAll', configHeader);
 }
 
 const updateData = ({ id, data }) => {

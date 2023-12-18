@@ -15,81 +15,72 @@ const columns: ColumnsType<DataType> = [
         title: 'Replicate',
         width: 100,
         dataIndex: 'replicate',
-        key: 'name',
         fixed: 'left',
     },
     {
         title: 'Sub-replicate',
         width: 100,
-        dataIndex: 'sub-replicate',
-        key: 'age',
+        dataIndex: 'subReplicate',
         fixed: 'left',
     },
     {
         title: 'Date',
         width: 120,
         dataIndex: 'date',
-        key: 'age',
         fixed: 'left',
     },
     {
         title: 'Cholorophyll',
-        dataIndex: 'cholorophyll',
-        key: '1',
+        dataIndex: 'chlorophyll',
         width: 120,
     },
     {
         title: 'Longitude',
         dataIndex: 'longitude',
-        key: '2',
         width: 120,
     },
     {
         title: 'Latitude',
         dataIndex: 'latitude',
-        key: '3',
         width: 120,
     },
     {
         title: 'P Conc',
         dataIndex: 'PConc',
-        key: '4',
         width: 120,
     },
     {
         title: 'K Conc',
         dataIndex: 'KConc',
-        key: '5',
         width: 120,
     },
     {
         title: 'N Conc',
-        dataIndex: 'KConc',
-        key: '6',
+        dataIndex: 'NConc',
         width: 120,
     },
     {
         title: 'Wet Weight',
         dataIndex: 'wetWeight',
-        key: '7',
         width: 120,
     },
     {
         title: 'Dried Weight',
         dataIndex: 'driedWeight',
-        key: '8',
         width: 120,
     },
     {
         title: 'Moiture',
-        dataIndex: 'moisture',
-        key: '9',
+        dataIndex: 'moiture',
         width: 120,
     },
-    { title: 'Digesion', dataIndex: 'address', key: '10', width: 120},
+    {
+        title: 'Digesion',
+        dataIndex: 'digesion',
+        width: 120
+    },
     {
         title: 'Action',
-        key: 'operation',
         fixed: 'right',
         width: 100,
         render: () => <a>Edit</a>,
@@ -98,25 +89,32 @@ const columns: ColumnsType<DataType> = [
 
 const UserPost = () => {
     const [data, setData] = useState([]);
-    const [loading] = useState(true);
+    const [loading, setLoading] = useState(true);
+    const [currentPage] = useState(1);
 
-    const getData = async () => {
+    const fetchData = async () => {
         try {
-            const configHeader = {
+            const config = {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
                 },
+                params: {
+                    page: currentPage,  // Send the current page as a query parameter
+                },
             };
-            const response = await axios.get('http://localhost:8080/statistical/search', configHeader);
+
+            const response = await axios.get('http://localhost:8080/statistical/searchAll', config);
             setData(response.data);
         } catch (error) {
             console.error('Error fetching data:', error);
+        } finally {
+            setLoading(false);
         }
     };
 
     useEffect(() => {
-        getData();
-    }, []);
+        fetchData();
+    }, [currentPage]);
 
     return (
         <Table
