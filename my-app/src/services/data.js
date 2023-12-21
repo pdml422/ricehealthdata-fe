@@ -2,7 +2,7 @@ import { APICore } from './apiCore';
 import axios from "axios";
 
 const api = new APICore();
-const baseUrl = 'http://localhost:8080'
+const baseUrl = 'http://100.96.184.148:8080'
 
 const getData = () => {
     const configHeader = {
@@ -10,7 +10,7 @@ const getData = () => {
             Authorization: `Bearer ${localStorage.getItem('accessToken')}`
         }
     };
-    return axios.get('http://localhost:8080/statistical/searchAll', configHeader);
+    return axios.get('http://100.96.184.148:8080/statistical/searchAll', configHeader);
 }
 
 const updateData = ({ id, data }) => {

@@ -158,7 +158,7 @@ const UserPost = () => {
                 },
             };
 
-            const response = await axios.get('http://localhost:8080/statistical/searchAll', config);
+            const response = await axios.get('http://100.96.184.148:8080/statistical/searchAll', config);
             setData(response.data);
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -174,7 +174,7 @@ const UserPost = () => {
                     Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
                 },
             };
-            await axios.put(`http://localhost:8080/statistical/${stadata.id}`, stadata, configHeader);
+            await axios.put(`http://100.96.184.148:8080/statistical/${stadata.id}`, stadata, configHeader);
             await fetchData();
         } catch (error) {
             console.error('Error updating data:', error);
@@ -188,7 +188,7 @@ const UserPost = () => {
                     Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
                 },
             };
-            await axios.delete(`http://localhost:8080/statistical/${stadata.id}`, configHeader);
+            await axios.delete(`http://100.96.184.148:8080/statistical/${stadata.id}`, configHeader);
             await fetchData();
             notification.success({
                 message: 'Data deleted successfully',

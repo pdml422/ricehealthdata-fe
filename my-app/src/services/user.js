@@ -2,7 +2,7 @@ import { APICore } from './apiCore';
 import axios from "axios";
 
 const api = new APICore();
-const baseUrl = 'http://localhost:8080'
+const baseUrl = 'http://100.96.184.148:8080'
 
 const getUsers = () => {
     try {
@@ -11,7 +11,7 @@ const getUsers = () => {
                 Authorization: `Bearer ${localStorage.getItem('accessToken')}`
             }
         };
-        const response =  axios.get('http://localhost:8080/users', configHeader);
+        const response =  axios.get('http://100.96.184.148:8080/users', configHeader);
         console.log(response)
     } catch (error) {}
 }

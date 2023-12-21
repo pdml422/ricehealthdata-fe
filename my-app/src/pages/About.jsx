@@ -45,7 +45,7 @@ const About = () => {
                     Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
                 },
             };
-            const response = await axios.get('http://localhost:8080/users', configHeader);
+            const response = await axios.get('http://100.96.184.148:8080/users', configHeader);
             setData(response.data);
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -59,7 +59,7 @@ const About = () => {
                     Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
                 },
             };
-            await axios.put(`http://localhost:8080/users/${user.id}`, user, configHeader);
+            await axios.put(`http://100.96.184.148:8080/users/${user.id}`, user, configHeader);
             await getUsers();
         } catch (error) {
             console.error('Error updating user:', error);
@@ -73,7 +73,7 @@ const About = () => {
                     Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
                 },
             };
-            await axios.delete(`http://localhost:8080/users/${user.id}`, configHeader);
+            await axios.delete(`http://100.96.184.148:8080/users/${user.id}`, configHeader);
             await getUsers();
             notification.success({
                 message: 'User deleted successfully',
