@@ -152,6 +152,7 @@ const UserPost = () => {
             const config = {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+                    UserId: localStorage.getItem('userId'),
                 },
                 params: {
                     page: currentPage,  // Send the current page as a query parameter

@@ -46,6 +46,14 @@ const Login = () => {
             if (decodedToken.groups[0] === 'ADMIN') {
                 navigate('/')
             } else {
+                    const config = {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+                        },
+                    };
+                    const response = await axios.get('http://100.96.184.148:8080/users/me', config);
+                    const userId = response.data.id;
+                    localStorage.setItem('userId', userId);
                 navigate('/users')
             }
             console.log(decodedToken.groups[0]);
