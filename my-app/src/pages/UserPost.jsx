@@ -11,9 +11,11 @@ const UserPost = () => {
     const [selectedData, setSelectedData] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
     const searchInput = useRef(null);
+
     const handleSearch = (selectedKeys, confirm, dataIndex) => {
         confirm();
         setSearchText(selectedKeys[0]);
@@ -129,6 +131,10 @@ const UserPost = () => {
         setIsDeleteModalOpen(true);
     };
 
+    const showAddModal = () => {
+        setIsAddModalOpen(true);
+    }
+
     const handleOk = async () => {
         setIsModalOpen(false);
         await updateData(selectedData);
@@ -140,12 +146,17 @@ const UserPost = () => {
         await deleteData(selectedData);
     };
 
+    const handleAddOk = async () => {
+        setIsModalOpen(false);
+        await createData();
+    };
+
     const handleCancel = () => {
         setIsModalOpen(false);
         setIsDeleteModalOpen(false);
+        setIsAddModalOpen(false);
         setSelectedData(null);
     };
-
 
     const fetchData = async () => {
         try {
@@ -165,6 +176,24 @@ const UserPost = () => {
             console.error('Error fetching data:', error);
         } finally {
             setLoading(false);
+        }
+    };
+
+
+    const createData = async () => {
+        try {
+            const configHeader = {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+                },
+            };
+            await axios.post(`http://100.96.184.148:8080/statistical/create`, configHeader);
+            await fetchData();
+            notification.success({
+                message: 'Data created successfully',
+            })
+        } catch (error) {
+            console.error('Error creating data:', error);
         }
     };
 
@@ -241,7 +270,7 @@ const UserPost = () => {
             width: 120,
         },
         {
-            title: 'Cholorophyll',
+            title: 'Chlorophyll',
             dataIndex: 'chlorophyll',
             width: 120,
         },
@@ -299,6 +328,7 @@ const UserPost = () => {
 
     return (
         <>
+            <Button onClick={() => showAddModal()} type="primary">Create data</Button>
             <Table
             columns={columns}
             dataSource={data}
@@ -432,7 +462,80 @@ const UserPost = () => {
                     <p>Are you sure you want to delete this user?</p>
                 </Modal>
             )}
-            </>
+
+            <Modal
+                title="Add Data"
+                visible={isAddModalOpen}
+                onOk={handleAddOk}
+                onCancel={handleCancel}
+            >
+                <Form>
+                    <Form.Item label="Replicate" name="replicate">
+                        <Input
+
+                        />
+                    </Form.Item>
+                    <Form.Item label="Sub-Replicate" name="subReplicate">
+                        <Input
+
+                        />
+                    </Form.Item>
+                    <Form.Item label="Date" name="date">
+                        <Input
+
+                        />
+                    </Form.Item>
+                    <Form.Item label="Chlorophyll" name="chlorophyll">
+                        <Input
+
+                        />
+                    </Form.Item>
+                    <Form.Item label="P Conc" name="pConc">
+                        <Input
+
+                        />
+                    </Form.Item>
+                    <Form.Item label="K Conc" name="kConc">
+                        <Input
+
+                        />
+                    </Form.Item>
+                    <Form.Item label="N Conc" name="nConc">
+                        <Input
+
+                        />
+                    </Form.Item>
+                    <Form.Item label="Wet weight" name="wetWeight">
+                        <Input
+
+
+                        />
+                    </Form.Item>
+                    <Form.Item label="Dried weight" name="driedWeight">
+                        <Input
+
+                        />
+                    </Form.Item>
+                    <Form.Item label="Moiture" name="moiture">
+                        <Input
+
+
+                        />
+                    </Form.Item>
+                    <Form.Item label="Digesion" name="digesion">
+                        <Input
+
+
+                        />
+                    </Form.Item>
+                    <Form.Item label="User ID" name="userId">
+                        <Input
+
+                        />
+                    </Form.Item>
+                </Form>
+            </Modal>
+        </>
     );
 };
 
