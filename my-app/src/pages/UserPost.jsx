@@ -32,6 +32,16 @@
         const [newUserId, setNewUserId] = useState('');
 
 
+        const createDataButtonStyle = {
+            textAlign: 'right',
+            marginBottom: '16px', // Adjust the margin as needed
+        };
+
+        const modalContentStyle = {
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            gap: '16px',
+        };
 
         const handleSearch = (selectedKeys, confirm, dataIndex) => {
             confirm();
@@ -363,7 +373,10 @@
 
         return (
             <>
-                <Button onClick={() => showAddModal()} type="primary">Create data</Button>
+                <div style={createDataButtonStyle}>
+                    <Button  onClick={() => showAddModal()} type="primary">Create data</Button>
+                </div>
+
                 <Table
                 columns={columns}
                 dataSource={data}
@@ -379,7 +392,7 @@
                         onOk={handleOk}
                         onCancel={handleCancel}
                     >
-                        <Form>
+                        <Form >
                             <Form.Item label="Chlorophyll" name="chlorophyll">
                                 <Input
                                     defaultValue={selectedData.chlorophyll}
@@ -504,7 +517,7 @@
                     onOk={handleAddOk}
                     onCancel={handleCancel}
                 >
-                    <Form>
+                    <Form style={modalContentStyle}>
                         <Form.Item label="Replicate" name="replicate">
                             <Input
                                 value={newReplicate} onChange={(e) => setNewReplicate(e.target.value)}
@@ -569,9 +582,6 @@
                             <Input
                                 value={newDigesion} onChange={(e) => setNewDigesion(e.target.value)}
                             />
-                        </Form.Item>
-                        <Form.Item label="User ID" name="userId">
-                            <Input disabled value={localStorage.getItem('userId')} />
                         </Form.Item>
                     </Form>
                 </Modal>
