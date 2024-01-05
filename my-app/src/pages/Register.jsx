@@ -36,7 +36,7 @@ const Register = () => {
   const onFinish = async (values) => {
       try {
           const response = await axios.post('http://100.96.184.148:8080/auth/register', values);
-          console.log('Registion succesful:',response.data);
+          console.log('Registration successful:',response.data);
           navigate('/login')
       } catch (error) {
           console.error('Error registering user:', error);
