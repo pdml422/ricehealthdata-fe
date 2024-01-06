@@ -22,11 +22,7 @@ const UserHome = () => {
                 blue: 30,
             };
 
-            const response = await axios.post(
-                'http://100.96.184.148:8080/image/rgb',
-                dataToSend,
-                config
-            );
+            const response = await axios.post('http://100.96.184.148:8080/image/rgb', dataToSend, config);
             setImage(response.data);
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -57,7 +53,6 @@ const UserHome = () => {
     };
 
     useEffect(() => {
-        fetchData();
         fetchImage();
         fetchMarkers();
     }, []);
