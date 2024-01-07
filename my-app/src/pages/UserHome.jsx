@@ -1,13 +1,52 @@
 import React, { useState, useEffect } from 'react';
+
 import axios from 'axios';
+import {Button, Form, Input, Modal} from "antd";
 
 const UserHome = () => {
+    const [data, setData] = useState([]);
     const [image, setImage] = useState('');
     const [markers, setMarkers] = useState([]);
     const [popupOpen, setPopupOpen] = useState(false);
     const [selectedMarker, setSelectedMarker] = useState(null);
+    const [isAddRGBModalOpen, setIsAddRGBModalOpen] = useState(false);
+    const [selectedRGB, setSelectedRGB] = useState(null);
 
-    const fetchImage = async () => {
+    const [newRed, setNewRed] = useState('');
+    const [newGreen, setNewGreen] = useState('');
+    const [newBlue, setNewBlue] = useState('');
+    const [newId, setNewId] = useState('');
+
+    const addRGBButtonStyle = {
+        textAlign: 'right',
+        marginBottom: '16px', // Adjust the margin as needed
+    };
+
+    const showAddRGBModal = () => {
+        setIsAddRGBModalOpen(true);
+    }
+
+    const handleAddRGBOk = async () => {
+        setIsAddRGBModalOpen(false);
+        const newData = {
+            id: newId,
+            red: newRed,
+            green: newGreen,
+            blue: newBlue
+
+        };
+        await fetchImage(newData);
+        await fetchMarkers();
+    };
+
+    const handleCancel = () => {
+        setIsAddRGBModalOpen(false);
+        setSelectedRGB(null);
+    };
+
+
+
+    const fetchImage = async (values) => {
         try {
             const config = {
                 headers: {
@@ -15,14 +54,8 @@ const UserHome = () => {
                     UserId: localStorage.getItem('userId'),
                 },
             };
-            const dataToSend = {
-                id: 1,
-                red: 50,
-                green: 40,
-                blue: 30,
-            };
 
-            const response = await axios.post('http://100.96.184.148:8080/image/rgb', dataToSend, config);
+            const response = await axios.post('http://100.96.184.148:8080/image/rgb', values, config);
             setImage(response.data);
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -43,6 +76,22 @@ const UserHome = () => {
         }
     };
 
+    const fetchData = async () => {
+        try {
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+                    UserId: localStorage.getItem('userId'),
+                },
+            };
+
+            const response = await axios.get('http://100.96.184.148:8080/statistical/searchAll', config);
+            setData(response.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
     const togglePopup = () => {
         setPopupOpen(!popupOpen);
     };
@@ -53,8 +102,7 @@ const UserHome = () => {
     };
 
     useEffect(() => {
-        fetchImage();
-        fetchMarkers();
+        fetchData();
     }, []);
 
     const scaledWidth = 8029 / 4.75;
@@ -62,12 +110,17 @@ const UserHome = () => {
 
     return (
         <>
-            <div style={{ position: 'relative' }}>
+            <div style={addRGBButtonStyle}>
+                <Button onClick={() => showAddRGBModal()} type="primary">Get RGB</Button>
+            </div>
+
+
+            <div style={{position: 'relative'}}>
                 <img src={image} alt="Map" width={scaledWidth} height={scaledHeight} />
 
                 {/* Markers */}
                 {markers.map((marker, index) => {
-                    const { x, y, dataId} = marker;
+                    const { x, y, dataId, } = marker;
 
                     const markerPosition = {
                         top: y / 4.75,
@@ -99,7 +152,7 @@ const UserHome = () => {
                 })}
 
                 {/* Custom Popup */}
-                {popupOpen && selectedMarker && (
+                {popupOpen && selectedMarker &&  (
                     <div
                         style={{
                             position: 'absolute',
@@ -113,10 +166,40 @@ const UserHome = () => {
                         }}
                         onClick={togglePopup}
                     >
-                        <p>{selectedMarker.id}</p>
+                        <p>{selectedMarker.id} </p>
                     </div>
                 )}
             </div>
+
+            <Modal
+                title="Add RGB"
+                visible={isAddRGBModalOpen}
+                onOk={handleAddRGBOk}
+                onCancel={handleCancel}
+            >
+                <Form >
+                    <Form.Item label="ID" name="id">
+                        <Input
+                            value={newId} onChange={(e) => setNewId(e.target.value)}
+                        />
+                    </Form.Item>
+                    <Form.Item label="Red" name="red">
+                        <Input
+                            value={newRed} onChange={(e) => setNewRed(e.target.value)}
+                        />
+                    </Form.Item>
+                    <Form.Item label="Green" name="green">
+                        <Input
+                            value={newGreen} onChange={(e) => setNewGreen(e.target.value)}
+                        />
+                    </Form.Item>
+                    <Form.Item label="Blue" name="blue">
+                        <Input
+                            value={newBlue} onChange={(e) => setNewBlue(e.target.value)}
+                        />
+                    </Form.Item>
+                        </Form >
+            </Modal>
         </>
     );
 };

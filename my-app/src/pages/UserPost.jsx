@@ -29,7 +29,6 @@
         const [newNConc, setNewNConc] = useState('');
         const [newWetWeight, setNewWetWeight] = useState('');
         const [newDriedWeight, setNewDriedWeight] = useState('');
-        const [newUserId, setNewUserId] = useState('');
 
 
         const createDataButtonStyle = {
