@@ -41,9 +41,9 @@ const UserLayout = () => {
     const [collapsed, setCollapsed] = useState(true)
     const user = sessionStorage.getItem('user')
 
-    if (!user) {
-        return <Navigate to="/login" />
-    }
+    // if (!user) {
+    //     return <Navigate to="/login" />
+    // }
 
     return (
         <StyledLayout>
@@ -85,7 +85,13 @@ const UserLayout = () => {
                         <Menu.Item style={logoutStyle}
                                    eventKey="logout"
                                    icon={<ArrowLeftOutlined />}
-                                   onClick={() => setCurrent('logout')}
+                                   onClick={() => {
+                                       setCurrent('logout')
+                                       localStorage.removeItem('red');
+                                       localStorage.removeItem('green');
+                                       localStorage.removeItem('blue');
+                                       localStorage.removeItem('id');
+                        }}
                         >
                             Logout
                         </Menu.Item>

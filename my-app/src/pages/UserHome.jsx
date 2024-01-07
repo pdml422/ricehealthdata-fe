@@ -12,10 +12,24 @@ const UserHome = () => {
     const [isAddRGBModalOpen, setIsAddRGBModalOpen] = useState(false);
     const [selectedRGB, setSelectedRGB] = useState(null);
 
-    const [newRed, setNewRed] = useState('');
-    const [newGreen, setNewGreen] = useState('');
-    const [newBlue, setNewBlue] = useState('');
-    const [newId, setNewId] = useState('');
+    const defaultRed = localStorage.getItem('red') || 40;
+    const defaultGreen = localStorage.getItem('green') || 30;
+    const defaultBlue = localStorage.getItem('blue') || 20;
+    const defaultId = localStorage.getItem('id') || 1;
+
+    const [newRed, setNewRed] = useState(defaultRed);
+    const [newGreen, setNewGreen] = useState(defaultGreen);
+    const [newBlue, setNewBlue] = useState(defaultBlue);
+    const [newId, setNewId] = useState(defaultId);
+
+
+
+    const addedImageData = {
+        red: localStorage.getItem('red') || newRed,
+        green: localStorage.getItem('green') || newGreen,
+        blue: localStorage.getItem('blue') || newBlue,
+        id: localStorage.getItem('id') || newId,
+    };
 
     const addRGBButtonStyle = {
         textAlign: 'right',
@@ -33,15 +47,31 @@ const UserHome = () => {
             red: newRed,
             green: newGreen,
             blue: newBlue
-
         };
         await fetchImage(newData);
+        localStorage.setItem('red', newRed)
+        localStorage.setItem('green', newGreen)
+        localStorage.setItem('blue', newBlue)
+        localStorage.setItem('id', newId)
         await fetchMarkers();
     };
 
     const handleCancel = () => {
         setIsAddRGBModalOpen(false);
         setSelectedRGB(null);
+    };
+
+    const handleImageClick = function(e) {
+        const ratioX = e.target.naturalWidth / scaledWidth;
+        const ratioY = e.target.naturalHeight / scaledHeight;
+
+        const domX = e.clientX - e.target.getBoundingClientRect().left;
+        const domY = e.clientY  - e.target.getBoundingClientRect().top;
+
+        const imgX = Math.floor(domX * ratioX);
+        const imgY = Math.floor(domY * ratioY);
+
+        console.log(imgX, imgY);
     };
 
 
@@ -103,6 +133,8 @@ const UserHome = () => {
 
     useEffect(() => {
         fetchData();
+        fetchImage(addedImageData);
+        fetchMarkers();
     }, []);
 
     const scaledWidth = 8029 / 4.75;
@@ -115,8 +147,8 @@ const UserHome = () => {
             </div>
 
 
-            <div style={{position: 'relative'}}>
-                <img src={image} alt="Map" width={scaledWidth} height={scaledHeight} />
+            <div style={{position: 'relative', display: 'flex'}}>
+                <img onClick={handleImageClick} src={image} alt="Map" width={scaledWidth} height={scaledHeight} />
 
                 {/* Markers */}
                 {markers.map((marker, index) => {
