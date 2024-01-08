@@ -145,9 +145,20 @@ const UserHome = () => {
         setPopupOpen(!popupOpen);
     };
 
-    const handleMarkerClick = (markerData) => {
-        setSelectedMarker(markerData);
-        setPopupOpen(true);
+    const handleMarkerClick = async (markerData) => {
+        try {
+            const configHeader = {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+                },
+            };
+            axios.get(`http://100.96.184.148:8080/statistical/${markerData.id}`, configHeader);
+            await fetchIdImage();
+            setSelectedMarker(markerData);
+            setPopupOpen(true);
+        } catch (error) {
+            console.error('Error fetching data:', error.response?.data || error.message);
+        }
     };
 
     useEffect(() => {
