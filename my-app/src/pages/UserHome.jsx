@@ -12,10 +12,28 @@ const UserHome = () => {
     const [isAddRGBModalOpen, setIsAddRGBModalOpen] = useState(false);
     const [selectedRGB, setSelectedRGB] = useState(null);
 
+    const fetchIdImage = async () => {
+        try {
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+                },
+            };
+            const response = await axios.get(`http://100.96.184.148:8080/image/rgb/${localStorage.getItem('userId')}`, config);
+            console.log(response.data[0].id)
+            setNewId(response.data[0].id)
+            localStorage.setItem('id', newId)
+        } catch (error) {
+            console.error('Error fetching image id:', error);
+        }
+    }
+
+    fetchIdImage()
+
     const defaultRed = localStorage.getItem('red') || 40;
     const defaultGreen = localStorage.getItem('green') || 30;
     const defaultBlue = localStorage.getItem('blue') || 20;
-    const defaultId = localStorage.getItem('id') || 1;
+    const defaultId = localStorage.getItem('id');
 
     const [newRed, setNewRed] = useState(defaultRed);
     const [newGreen, setNewGreen] = useState(defaultGreen);
@@ -76,6 +94,7 @@ const UserHome = () => {
 
 
 
+
     const fetchImage = async (values) => {
         try {
             const config = {
@@ -99,7 +118,7 @@ const UserHome = () => {
                     Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
             }
             }
-            const response = await axios.get('http://100.96.184.148:8080/image/map/1', config);
+            const response = await axios.get(`http://100.96.184.148:8080/image/map/${localStorage.getItem('id')}`, config);
             setMarkers(response.data);
         } catch (error) {
             console.error('Error fetching markers:', error);
@@ -135,6 +154,7 @@ const UserHome = () => {
         fetchData();
         fetchImage(addedImageData);
         fetchMarkers();
+
     }, []);
 
     const scaledWidth = 8029 / 4.75;
@@ -210,11 +230,6 @@ const UserHome = () => {
                 onCancel={handleCancel}
             >
                 <Form >
-                    <Form.Item label="ID" name="id">
-                        <Input
-                            value={newId} onChange={(e) => setNewId(e.target.value)}
-                        />
-                    </Form.Item>
                     <Form.Item label="Red" name="red">
                         <Input
                             value={newRed} onChange={(e) => setNewRed(e.target.value)}
