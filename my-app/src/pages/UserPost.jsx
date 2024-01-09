@@ -506,7 +506,7 @@
                         onOk={handleDeleteOk}
                         onCancel={handleCancel}
                     >
-                        <p>Are you sure you want to delete this user?</p>
+                        <p>Are you sure you want to delete this data?</p>
                     </Modal>
                 )}
 

@@ -152,7 +152,13 @@ const UserHome = () => {
                     Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
                 },
             };
-            axios.get(`http://100.96.184.148:8080/statistical/${markerData.id}`, configHeader);
+            axios.get(`http://100.96.184.148:8080/statistical/${markerData.id}`, configHeader)
+                .then(response => {
+                    console.log(response.data)
+                    setData(response.data)
+                })
+
+
             await fetchIdImage();
             setSelectedMarker(markerData);
             setPopupOpen(true);
@@ -168,8 +174,8 @@ const UserHome = () => {
 
     }, []);
 
-    const scaledWidth = 8029 / 4.75;
-    const scaledHeight = 8609 / 4.75;
+    const scaledWidth = 8029 / 3.42;
+    const scaledHeight = 8609 / 3.42;
 
     return (
         <>
@@ -186,12 +192,13 @@ const UserHome = () => {
                     const { x, y, dataId, } = marker;
 
                     const markerPosition = {
-                        top: y / 4.75,
-                        left: x / 4.75,
+                        top: y / 3.42,
+                        left: x / 3.42,
                     };
 
                     return (
                         <div
+
                             key={index}
                             style={{
                                 position: 'absolute',
@@ -209,7 +216,8 @@ const UserHome = () => {
                                     backgroundColor: 'red',
                                     borderRadius: '50%',
                                 }}
-                            ></div>
+                            >
+                            </div>
                         </div>
                     );
                 })}
@@ -219,8 +227,8 @@ const UserHome = () => {
                     <div
                         style={{
                             position: 'absolute',
-                            top: selectedMarker.y / 4.75 - 20,
-                            left: selectedMarker.x / 4.75 + 20,
+                            top: selectedMarker.y / 3.42 - 20,
+                            left: selectedMarker.x / 3.42 + 20,
                             backgroundColor: 'white',
                             padding: '10px',
                             borderRadius: '5px',
@@ -229,7 +237,20 @@ const UserHome = () => {
                         }}
                         onClick={togglePopup}
                     >
-                        <p>{selectedMarker.id} </p>
+                        <p>
+                            Replicate: {data.replicate} <br/>
+                            SubReplicate: {data.subReplicate} <br/>
+                            Date: {data.date} <br/>
+                            Chlorophyll: {data.chlorophyll} <br/>
+                            PConc: {data.PConc} <br/>
+                            KConc: {data.KConc} <br/>
+                            NConc: {data.NConc} <br/>
+                            WetWeight: {data.wetWeight} <br/>
+                            DriedWeight: {data.driedWeight} <br/>
+                            Moiture: {data.moiture} <br/>
+                            Digesion: {data.digesion} <br/>
+
+                        </p>
                     </div>
                 )}
             </div>
