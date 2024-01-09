@@ -16,31 +16,6 @@
         const [searchedColumn, setSearchedColumn] = useState('');
         const searchInput = useRef(null);
 
-        const [newReplicate, setNewReplicate] = useState('');
-        const [newSubReplicate, setNewSubReplicate] = useState('');
-        const [newDate, setNewDate] = useState('');
-        const [newChlorophyll, setNewChlorophyll] = useState('');
-        const [newLongitude, setNewLongitude] = useState('');
-        const [newLatitude, setNewLatitude] = useState('');
-        const [newMoiture, setNewMoiture] = useState('');
-        const [newDigesion, setNewDigesion] = useState('');
-        const [newPConc, setNewPConc] = useState('');
-        const [newKConc, setNewKConc] = useState('');
-        const [newNConc, setNewNConc] = useState('');
-        const [newWetWeight, setNewWetWeight] = useState('');
-        const [newDriedWeight, setNewDriedWeight] = useState('');
-
-
-        const createDataButtonStyle = {
-            textAlign: 'right',
-            marginBottom: '16px', // Adjust the margin as needed
-        };
-
-        const modalContentStyle = {
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: '16px',
-        };
 
         const handleSearch = (selectedKeys, confirm, dataIndex) => {
             confirm();
@@ -172,32 +147,10 @@
             await deleteData(selectedData);
         };
 
-        const handleAddOk = async () => {
-            setIsAddModalOpen(false);
-            const newData = {
-                replicate: newReplicate,
-                subReplicate: newSubReplicate,
-                date: newDate,
-                longitude: newLongitude,
-                latitude: newLatitude,
-                digesion: newDigesion,
-                pConc: newPConc,
-                kConc: newKConc,
-                nConc: newNConc,
-                moiture: newMoiture,
-                wetWeight: newWetWeight,
-                driedWeight: newDriedWeight,
-                chlorophyll: newChlorophyll,
-                // ... (use state variables for other properties)
-                userId: localStorage.getItem('userId')
-            };
-            await createData(newData);
-        };
 
         const handleCancel = () => {
             setIsModalOpen(false);
             setIsDeleteModalOpen(false);
-            setIsAddModalOpen(false);
             setSelectedData(null);
         };
 
@@ -232,7 +185,6 @@
                 };
                 await axios.post(`http://100.96.184.148:8080/statistical/create`, values, configHeader);
                 await fetchData()
-                console.log()
                 notification.success({
                     message: 'Data created successfully',
                 })
@@ -372,10 +324,6 @@
 
         return (
             <>
-                <div style={createDataButtonStyle}>
-                    <Button  onClick={() => showAddModal()} type="primary">Create data</Button>
-                </div>
-
                 <Table
                 columns={columns}
                 dataSource={data}
@@ -509,81 +457,6 @@
                         <p>Are you sure you want to delete this data?</p>
                     </Modal>
                 )}
-
-                <Modal
-                    title="Add Data"
-                    visible={isAddModalOpen}
-                    onOk={handleAddOk}
-                    onCancel={handleCancel}
-                >
-                    <Form style={modalContentStyle}>
-                        <Form.Item label="Replicate" name="replicate">
-                            <Input
-                                value={newReplicate} onChange={(e) => setNewReplicate(e.target.value)}
-                            />
-                        </Form.Item>
-                        <Form.Item label="Sub-replicate" name="subReplicate">
-                            <Input
-                                value={newSubReplicate} onChange={(e) => setNewSubReplicate(e.target.value)}
-                            />
-                        </Form.Item>
-                        <Form.Item label="Date" name="date">
-                            <Input
-                                value={newDate} onChange={(e) => setNewDate(e.target.value)}
-                            />
-                        </Form.Item>
-                        <Form.Item label="Longitude" name="longitude">
-                            <Input
-                                value={newLongitude} onChange={(e) => setNewLongitude(e.target.value)}
-                            />
-                        </Form.Item>
-                        <Form.Item label="Latitude" name="latitude">
-                            <Input
-                                value={newLatitude} onChange={(e) => setNewLatitude(e.target.value)}
-                            />
-                        </Form.Item>
-                        <Form.Item label="Chlorophyll" name="chlorophyll">
-                            <Input
-                                value={newChlorophyll} onChange={(e) => setNewChlorophyll(e.target.value)}
-                            />
-                        </Form.Item>
-                        <Form.Item label="P Conc" name="pConc">
-                            <Input
-                                value={newPConc} onChange={(e) => setNewPConc(e.target.value)}
-                            />
-                        </Form.Item>
-                        <Form.Item label="K Conc" name="kConc">
-                            <Input
-                                value={newKConc} onChange={(e) => setNewKConc(e.target.value)}
-                            />
-                        </Form.Item>
-                        <Form.Item label="N Conc" name="nConc">
-                            <Input
-                                value={newNConc} onChange={(e) => setNewNConc(e.target.value)}
-                            />
-                        </Form.Item>
-                        <Form.Item label="Wet weight" name="wetWeight">
-                            <Input
-                                value={newWetWeight} onChange={(e) => setNewWetWeight(e.target.value)}
-                            />
-                        </Form.Item>
-                        <Form.Item label="Dried weight" name="driedWeight">
-                            <Input
-                                value={newDriedWeight} onChange={(e) => setNewDriedWeight(e.target.value)}
-                            />
-                        </Form.Item>
-                        <Form.Item label="Moiture" name="moiture">
-                            <Input
-                                value={newMoiture} onChange={(e) => setNewMoiture(e.target.value)}
-                            />
-                        </Form.Item>
-                        <Form.Item label="Digesion" name="digesion">
-                            <Input
-                                value={newDigesion} onChange={(e) => setNewDigesion(e.target.value)}
-                            />
-                        </Form.Item>
-                    </Form>
-                </Modal>
             </>
         );
     };
