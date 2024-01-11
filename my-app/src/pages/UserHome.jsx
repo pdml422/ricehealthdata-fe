@@ -43,10 +43,10 @@ const UserHome = () => {
 
             // Example: Construct FormData and make a POST request using Axios
             const formData = new FormData();
-            formData.append('hdrFile', hdrFile);
-            formData.append('imgFile', imgFile);
+            formData.append('header', hdrFile); // 'hdr' is the key for HDR file
+            formData.append('image', imgFile); // 'image' is the key for IMG file
 
-            const response = await axios.post('http://100.96.184.148:8000/image/hyper', formData, {
+            const response = await axios.post('http://100.96.184.148:8080/image/hyper', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
