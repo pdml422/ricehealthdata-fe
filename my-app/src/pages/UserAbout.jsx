@@ -74,9 +74,11 @@ const UserAbout = () => {
         gap: '16px',
     };
 
-    const createDataButtonStyle = {
-        textAlign: 'right',
-        marginBottom: '16px', // Adjust the margin as needed
+    const ButtonStyle = {
+        display: 'flex',
+        gap: '8px',  
+        marginBottom: '16px',
+        justifyContent: 'flex-end',
     };
 
 
@@ -85,11 +87,6 @@ const UserAbout = () => {
         green: localStorage.getItem('green') || newGreen,
         blue: localStorage.getItem('blue') || newBlue,
         id: localStorage.getItem('id') || newId,
-    };
-
-    const addRGBButtonStyle = {
-        textAlign: 'right',
-        marginBottom: '16px', // Adjust the margin as needed
     };
 
     const showAddModal = () => {
@@ -291,17 +288,17 @@ const UserAbout = () => {
 
     }, []);
 
+
+
+
     const scaledWidth = 8029 / 5.5;
     const scaledHeight = 8609 / 5.5;
 
     return (
         <>
-            <div style={createDataButtonStyle}>
+            <div style={ButtonStyle}>
                 <Button  type={toggleState ? 'primary' : 'default'} onClick={handleToggle}>
                     {toggleState ? 'Turned On' : 'Turned Off'}</Button>
-            </div>
-
-            <div style={addRGBButtonStyle}>
                 <Button onClick={() => showAddRGBModal()} type="primary">Get RGB</Button>
             </div>
 

@@ -8,6 +8,14 @@ const UserHome = () => {
     const [data, setData] = useState([]);
     const [selectedData, setSelectedData] = useState(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+
+    const addFileButton = {
+        display: 'flex',
+        gap: '5px',
+        marginBottom: '16px',
+        justifyContent: 'flex-end'
+    }
 
     const showDeleteModal = (stadata) => {
         setSelectedData(stadata);
@@ -19,8 +27,18 @@ const UserHome = () => {
         await deleteImageFile(selectedData);
     };
 
+    const showUploadModal = () => {
+        setIsUploadModalOpen(true);
+    };
+
+    const handleUploadOk = async () => {
+        await handleUploadFiles()
+        setIsUploadModalOpen(false);
+    };
+
     const handleCancel = () => {
         setIsDeleteModalOpen(false);
+        setIsUploadModalOpen(false);
         setSelectedData(null);
     };
 
@@ -171,16 +189,12 @@ const UserHome = () => {
 
     return (
         <>
-            {/* Choose HDR file input */}
-            <input type="file" accept=".hdr" onChange={handleFileChange} />
-
-            {/* Choose IMG file input */}
-            <input type="file" accept=".img" onChange={handleFileChange} />
-
-            {/* Upload Files button */}
-            <Button onClick={handleUploadFiles} type="primary">
-                Upload Files
-            </Button>
+            <div style={addFileButton}>
+                {/* Upload Files button */}
+                <Button onClick={showUploadModal} type="primary">
+                    Upload Files
+                </Button>
+            </div>
 
             <Table
                 columns={columns}
@@ -200,6 +214,19 @@ const UserHome = () => {
                 </Modal>
             )}
 
+            <Modal
+                title="Confirm Upload"
+                visible={isUploadModalOpen}
+                onOk={handleUploadOk}
+                onCancel={handleCancel}
+            >
+                <p>HDR file</p>
+                {/* Choose HDR file input */}
+                <input type="file" accept=".hdr" onChange={handleFileChange}/>
+                <p>IMG file</p>
+                {/* Choose IMG file input */}
+                <input type="file" accept=".img" onChange={handleFileChange}/>
+            </Modal>
         </>
     );
 };
