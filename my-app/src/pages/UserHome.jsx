@@ -1,10 +1,28 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from 'axios';
-import { Button, notification } from 'antd';
+import {Button, Modal, notification, Space, Table} from 'antd';
 
 const UserHome = () => {
     const [hdrFile, setHdrFile] = useState(null);
     const [imgFile, setImgFile] = useState(null);
+    const [data, setData] = useState([]);
+    const [selectedData, setSelectedData] = useState(null);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+    const showDeleteModal = (stadata) => {
+        setSelectedData(stadata);
+        setIsDeleteModalOpen(true);
+    };
+
+    const handleDeleteOk = async () => {
+        setIsDeleteModalOpen(false);
+        await deleteImageFile(selectedData);
+    };
+
+    const handleCancel = () => {
+        setIsDeleteModalOpen(false);
+        setSelectedData(null);
+    };
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
@@ -61,6 +79,7 @@ const UserHome = () => {
                 message: 'Success',
                 description: 'Files uploaded successfully.',
             });
+            await fetchImageFile();
 
         } catch (error) {
             console.error('Error uploading files:', error.response?.data || error.message);
@@ -72,6 +91,83 @@ const UserHome = () => {
             });
         }
     };
+
+    const fetchImageFile = async () => {
+        try {
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+                    UserId: localStorage.getItem('userId'),
+                },
+            };
+
+            const response = await axios.get(`http://100.96.184.148:8080/image/hyper/${localStorage.getItem('userId')}`, config);
+            console.log(response.data)
+            setData(response.data)
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
+    const deleteImageFile = async (stadata) => {
+        try {
+            const configHeader = {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+                },
+            };
+            await axios.delete(`http://100.96.184.148:8080/image/hyper/${stadata.id}`, configHeader);
+            await fetchImageFile();
+            notification.success({
+                message: 'Data deleted successfully',
+            });
+        } catch (error) {
+            console.error('Error deleting file:', error);
+            notification.error({
+                message: 'Error deleting file',
+            });
+        }
+    };
+
+
+    useEffect(() => {
+        fetchImageFile();
+    }, []);
+
+        const columns  = [
+            {
+                title: 'File',
+                width: 100,
+                dataIndex: 'path',
+                fixed: 'left',
+                render: (text) => {
+                    const fileName = text.split('/').pop(); // Extracts the filename from the path
+                    return <span>{fileName}</span>;
+                },
+            },
+            {
+                title: 'Type',
+                dataIndex: 'type',
+                width: 120
+            },
+            {
+                title: 'Action',
+                fixed: 'right',
+                width: 100,
+                render: (text, record) => (
+                    <Space size="middle">
+                        <a style={{ color: 'red' }} onClick={() => showDeleteModal(record)}>
+                            Delete
+                        </a>
+                    </Space>
+                ),
+
+            },
+        ];
+
+
+
+
 
     return (
         <>
@@ -85,6 +181,25 @@ const UserHome = () => {
             <Button onClick={handleUploadFiles} type="primary">
                 Upload Files
             </Button>
+
+            <Table
+                columns={columns}
+                dataSource={data}
+                scroll={{ x: 1500 }}
+                sticky={{ offsetHeader: 64 }}
+            />
+
+            {selectedData && (
+                <Modal
+                    title="Confirm Delete"
+                    visible={isDeleteModalOpen}
+                    onOk={handleDeleteOk}
+                    onCancel={handleCancel}
+                >
+                    <p>Are you sure you want to delete this file?</p>
+                </Modal>
+            )}
+
         </>
     );
 };
