@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-
+import type { MenuProps } from 'antd';
 import axios from 'axios';
-import {Button, Form, Input, Modal, notification} from "antd";
+import {Button, Form, Input, Modal, notification, Dropdown} from "antd";
 
 const UserAbout = () => {
     const [data, setData] = useState([]);
@@ -76,10 +76,17 @@ const UserAbout = () => {
 
     const ButtonStyle = {
         display: 'flex',
-        gap: '8px',  
+        gap: '8px',
         marginBottom: '16px',
         justifyContent: 'flex-end',
     };
+
+    const HeaderFilesStyle = {
+        display: 'flex',
+        gap: '8px',
+        marginBottom: '16px',
+        textAlign: 'left',
+    }
 
 
     const addedImageData = {
@@ -288,18 +295,46 @@ const UserAbout = () => {
 
     }, []);
 
-
-
-
     const scaledWidth = 8029 / 5.5;
     const scaledHeight = 8609 / 5.5;
+
+
+    const items: MenuProps['items'] = [
+        {
+            key: '1',
+            label: (
+                <a target="_blank" rel="noopener noreferrer">
+                    1st menu item
+                </a>
+            ),
+        },
+        {
+            key: '2',
+            label: (
+                <a target="_blank" rel="noopener noreferrer">
+                    2nd menu item
+                </a>
+            ),
+        },
+
+    ];
 
     return (
         <>
             <div style={ButtonStyle}>
-                <Button  type={toggleState ? 'primary' : 'default'} onClick={handleToggle}>
-                    {toggleState ? 'Turned On' : 'Turned Off'}</Button>
-                <Button onClick={() => showAddRGBModal()} type="primary">Get RGB</Button>
+                <div style={HeaderFilesStyle}>
+                    <Dropdown menu={{items}} placement="topRight" arrow>
+                        <Button type="primary">Header Files</Button>
+                    </Dropdown>
+                </div>
+                <div style={{marginLeft: 'auto'}}>
+                    <div style={ButtonStyle}>
+                    <Button type={toggleState ? 'primary' : 'default'} onClick={handleToggle}>
+                        {toggleState ? 'Turned On' : 'Turned Off'}
+                    </Button>
+                    <Button onClick={() => showAddRGBModal()} type="primary">Get RGB</Button>
+                    </div>
+                </div>
             </div>
 
             <div style={{position: 'relative', display: 'flex'}}>
@@ -476,6 +511,8 @@ const UserAbout = () => {
             <Modal title="Confirm" open={isModalConfirmOpen} onOk={handleConfirmOk} onCancel={handleCancel}>
                 <p>Confirm to create data?</p>
             </Modal>
+
+
         </>
     );
 };
