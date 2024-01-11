@@ -72,6 +72,15 @@ const UserLayout = () => {
                             Dashboard
                         </Menu.Item>
                     </Link>
+                    <Link to="users/about">
+                        <Menu.Item
+                            eventKey="about"
+                            icon={<UserOutlined />}
+                            onClick={() => setCurrent('about')}
+                        >
+                            About
+                        </Menu.Item>
+                    </Link>
                     <Link to="users/posts">
                         <Menu.Item
                             eventKey="posts"

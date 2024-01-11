@@ -4,6 +4,7 @@ import FullLayout from './layouts/FullLayout'
 import DefaultLayout from './layouts/DefaultLayout'
 import UserLayout from "./layouts/UserLayout";
 
+
 const LoginPage = React.lazy(() => import('./pages/Login'))
 const RegisterPage = React.lazy(() => import('./pages/Register'))
 
@@ -13,6 +14,7 @@ const PostPage = React.lazy(() => import('./pages/Post'))
 
 const UserHomePage = React.lazy(() => import('./pages/UserHome'))
 const UserPostPage = React.lazy(() => import('./pages/UserPost'))
+const UserAboutPage = React.lazy(() => import('./pages/UserAbout'))
 
 const loading = () => <div className="" />
 
@@ -60,6 +62,10 @@ const AllRoutes = () => {
         {
           path: '/users',
           element: <LoadComponent component={UserHomePage} />
+        },
+        {
+          path: '/users/about',
+          element: <LoadComponent component={UserAboutPage} />
         },
         {
           path: '/users/posts',
