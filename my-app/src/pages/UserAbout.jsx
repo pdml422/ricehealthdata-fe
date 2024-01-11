@@ -46,7 +46,7 @@ const UserAbout = () => {
                     Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
                 },
             };
-            const response = await axios.get(`http://100.96.184.148:8080/image/rgb/${localStorage.getItem('userId')}`, config);
+            const response = await axios.get(`http://100.96.184.148:8080/image/hyper/${localStorage.getItem('userId')}`, config);
             console.log(response.data[0].id)
             setNewId(response.data[0].id)
             localStorage.setItem('id', newId)
