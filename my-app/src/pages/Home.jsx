@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Space, Table } from 'antd';
+import { Space, Table, message, Popconfirm } from 'antd';
 import axios from 'axios';
 
 const Home = () => {
@@ -38,6 +38,27 @@ const Home = () => {
         }
     };
 
+    const deleteUserImage = async (imageId) => {
+        try {
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+                },
+            };
+
+            // Assuming your delete API endpoint is available at http://100.96.184.148:8080/image/hyper/{imageId}
+            await axios.delete(`http://100.96.184.148:8080/image/hyper/${imageId}`, config);
+
+            // After deletion, refetch the user data
+            await getUsers();
+
+            message.success('Image deleted successfully');
+        } catch (error) {
+            console.error('Error deleting image:', error);
+            message.error('Error deleting image');
+        }
+    };
+
     useEffect(() => {
         const fetchData = async () => {
             await getUsers();
@@ -71,15 +92,22 @@ const Home = () => {
                 title: 'Type',
                 dataIndex: 'type',
             },
-            // {
-            //     title: 'Action',
-            //     dataIndex: 'operation',
-            //     render: () => (
-            //         <Space size="middle">
-            //             <a style={{ color: 'red' }}> Delete </a>
-            //         </Space>
-            //     ),
-            // },
+            {
+                title: 'Action',
+                dataIndex: 'operation',
+                render: (_, record) => (
+                    <Space size="middle">
+                        <Popconfirm
+                            title="Are you sure to delete this file?"
+                            onConfirm={() => deleteUserImage(record.id)}
+                            okText="Yes"
+                            cancelText="No"
+                        >
+                            <a style={{ color: 'red' }}> Delete </a>
+                        </Popconfirm>
+                    </Space>
+                ),
+            },
         ];
 
         // Check if the user has associated image data
