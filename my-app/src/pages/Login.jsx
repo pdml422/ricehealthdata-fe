@@ -44,7 +44,7 @@ const Login = () => {
             let decodedToken = jwtDecode(data.token);
             // console.log(decodedToken);
             if (decodedToken.groups[0] === 'ADMIN') {
-                navigate('/')
+                navigate('/admin/userdata')
             } else {
                     const config = {
                         headers: {
@@ -54,7 +54,7 @@ const Login = () => {
                     const response = await axios.get('http://100.96.184.148:8080/users/me', config);
                     const userId = response.data.id;
                     localStorage.setItem('userId', userId);
-                navigate('/users')
+                navigate('/users/files')
             }
             console.log(decodedToken.groups[0]);
 

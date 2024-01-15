@@ -10,7 +10,6 @@ const RegisterPage = React.lazy(() => import('./pages/Register'))
 
 const HomePage = React.lazy(() => import('./pages/Home'))
 const AboutPage = React.lazy(() => import('./pages/About'))
-const PostPage = React.lazy(() => import('./pages/Post'))
 
 const UserHomePage = React.lazy(() => import('./pages/UserHome'))
 const UserPostPage = React.lazy(() => import('./pages/UserPost'))
@@ -43,32 +42,28 @@ const AllRoutes = () => {
       element: <FullLayout />,
       children: [
         {
-          path: '',
+          path: '/admin/userdata',
           element: <LoadComponent component={HomePage} />
         },
         {
-          path: '/about',
+          path: '/admin/user',
           element: <LoadComponent component={AboutPage} />
         },
-        {
-          path: '/posts',
-          element: <LoadComponent component={PostPage} />
-        }
       ]
     },
     {
       element: <UserLayout />,
       children: [
         {
-          path: '/users',
+          path: '/users/files',
           element: <LoadComponent component={UserHomePage} />
         },
         {
-          path: '/users/about',
+          path: '/users/image',
           element: <LoadComponent component={UserAboutPage} />
         },
         {
-          path: '/users/posts',
+          path: '/users/data',
           element: <LoadComponent component={UserPostPage} />
         }
       ]

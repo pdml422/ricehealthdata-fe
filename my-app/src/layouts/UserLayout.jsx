@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import {
-    HomeOutlined,
     MenuFoldOutlined,
     MenuUnfoldOutlined,
     ProfileOutlined,
-    UserOutlined,
-    ArrowLeftOutlined
+    ArrowLeftOutlined,
+    PictureOutlined,
+    FileOutlined
 } from '@ant-design/icons'
 import { Layout, Menu, Button } from 'antd'
 import { Navigate, Outlet, Link } from 'react-router-dom'
@@ -41,9 +41,9 @@ const UserLayout = () => {
     const [collapsed, setCollapsed] = useState(false)
     const user = sessionStorage.getItem('user')
 
-    // if (!user) {
-    //     return <Navigate to="/login" />
-    // }
+    if (!user) {
+        return <Navigate to="/login" />
+    }
 
     return (
         <StyledLayout>
@@ -63,31 +63,31 @@ const UserLayout = () => {
                     mode="inline"
                     selectedKeys={[current]}
                 >
-                    <Link to="/users">
+                    <Link to="/users/files">
                         <Menu.Item
                             eventKey="home"
-                            icon={<HomeOutlined />}
+                            icon={<FileOutlined />}
                             onClick={() => setCurrent('home')}
                         >
-                            Dashboard
+                            Files
                         </Menu.Item>
                     </Link>
-                    <Link to="users/about">
+                    <Link to="users/image">
                         <Menu.Item
                             eventKey="about"
-                            icon={<UserOutlined />}
+                            icon={<PictureOutlined />}
                             onClick={() => setCurrent('about')}
                         >
-                            About
+                            Data Image
                         </Menu.Item>
                     </Link>
-                    <Link to="users/posts">
+                    <Link to="users/data">
                         <Menu.Item
                             eventKey="posts"
                             icon={<ProfileOutlined />}
                             onClick={() => setCurrent('posts')}
                         >
-                            Posts
+                            Statistical Data
                         </Menu.Item>
                     </Link>
                     <Link to="/login">
