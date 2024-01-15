@@ -38,7 +38,7 @@ const StyledLayout = styled(Layout)`
 const FullLayout = () => {
   let location = useLocation()
   const [current, setCurrent] = useState('home')
-  const [collapsed, setCollapsed] = useState(true)
+  const [collapsed, setCollapsed] = useState(false)
   const user = sessionStorage.getItem('user')
 
     if (!user) {

@@ -46,16 +46,13 @@ const UserAbout = () => {
                     Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
                 },
             };
-            const response = await axios.get(`http://100.96.184.148:8080/image/hyper/${localStorage.getItem('userId')}`, config);
-            console.log(response.data[0].id)
-            setNewId(response.data[0].id)
-            localStorage.setItem('id', newId)
+            const response = await axios.get(`http://100.96.184.148:8080/image/hyper/${localStorage.getItem('userId')}/header`, config);
+            setImageIdData(response.data);
         } catch (error) {
             console.error('Error fetching image id:', error);
         }
     }
 
-    fetchIdImage()
 
     const defaultRed = localStorage.getItem('red') || 40;
     const defaultGreen = localStorage.getItem('green') || 30;
@@ -292,38 +289,38 @@ const UserAbout = () => {
         fetchData();
         fetchImage(addedImageData);
         fetchMarkers();
-
+        fetchIdImage();
     }, []);
 
     const scaledWidth = 8029 / 5.5;
     const scaledHeight = 8609 / 5.5;
 
+    const [imageIdData, setImageIdData] = useState([]);
+    const handleMenuItemClick = (id) => {
+        localStorage.setItem('id', id);
+        window.location.reload();
+    };
 
-    const items: MenuProps['items'] = [
-        {
-            key: '1',
-            label: (
-                <a target="_blank" rel="noopener noreferrer">
-                    1st menu item
-                </a>
-            ),
-        },
-        {
-            key: '2',
-            label: (
-                <a target="_blank" rel="noopener noreferrer">
-                    2nd menu item
-                </a>
-            ),
-        },
 
-    ];
+    const items = imageIdData.map((item) => {
+        const pathParts = item.path.split('/');
+        const fileName = pathParts[pathParts.length - 1];
+
+        return {
+            key: item.id.toString(),
+            label: (
+                <div key={item.id} onClick={() => handleMenuItemClick(item.id)}>
+                    {fileName}
+                </div>
+            ),
+        };
+    });
 
     return (
         <>
             <div style={ButtonStyle}>
                 <div style={HeaderFilesStyle}>
-                    <Dropdown menu={{items}} placement="topRight" arrow>
+                    <Dropdown menu={{items}} placement="bottom" arrow>
                         <Button type="primary">Header Files</Button>
                     </Dropdown>
                 </div>
