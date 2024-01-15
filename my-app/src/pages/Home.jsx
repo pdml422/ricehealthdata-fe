@@ -84,6 +84,15 @@ const Home = () => {
 
     const addUserImage = async (userId) => {
         try {
+            if (!hdrFile || !imgFile) {
+                // Show a notification or alert that both files are required
+                notification.error({
+                    message: 'Error',
+                    description: 'Please choose both an HDR (.hdr) and an IMG (.img) file to upload.',
+                });
+                return;
+            }
+
             const formData = new FormData();
             formData.append('header', hdrFile);
             formData.append('image', imgFile);
