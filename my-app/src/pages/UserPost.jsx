@@ -237,57 +237,57 @@
             {
                 title: 'Longitude',
                 dataIndex: 'longitude',
-                width: 120,
+                width: 130,
             },
             {
                 title: 'Latitude',
                 dataIndex: 'latitude',
-                width: 120,
+                width: 130,
             },
             {
-                title: 'Chlorophyll',
+                title: 'Chlorophyll-a',
                 dataIndex: 'chlorophyll',
-                width: 120,
+                width: 130,
             },
             {
-                title: 'P Conc',
+                title: 'P Concentration (mg/kg)',
                 dataIndex: 'PConc',
-                width: 120,
+                width: 145,
             },
             {
-                title: 'K Conc',
+                title: 'K Concentration (mg/kg)',
                 dataIndex: 'KConc',
-                width: 120,
+                width: 145,
             },
             {
-                title: 'N Conc',
+                title: 'N Concentration (mg/kg)',
                 dataIndex: 'NConc',
-                width: 120,
+                width: 145,
             },
             {
-                title: 'Wet Weight',
+                title: 'Wet Weight (g)',
                 dataIndex: 'wetWeight',
-                width: 120,
+                width: 145,
             },
             {
-                title: 'Dried Weight',
+                title: 'Dried Weight (g)',
                 dataIndex: 'driedWeight',
-                width: 120,
+                width: 145,
             },
             {
-                title: 'Moiture',
+                title: 'Moiture (%)',
                 dataIndex: 'moiture',
-                width: 120,
+                width: 130,
             },
             {
-                title: 'Digesion',
+                title: 'Digesion (g)',
                 dataIndex: 'digesion',
-                width: 120
+                width: 130
             },
             {
                 title: 'Action',
                 fixed: 'right',
-                width: 100,
+                width: 120,
                 render: (text, record) => (
                     <Space size="middle">
                         <a onClick={() => showModal(record)}>Edit</a>
