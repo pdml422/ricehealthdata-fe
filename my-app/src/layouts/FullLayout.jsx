@@ -63,31 +63,22 @@ const FullLayout = () => {
           mode="inline"
           selectedKeys={[current]}
         >
-          <Link to="/">
+          <Link to="/admin/userdata">
             <Menu.Item
               eventKey="home"
-              icon={<HomeOutlined />}
+              icon={<ProfileOutlined />}
               onClick={() => setCurrent('home')}
             >
-              Dashboard
+              User Data Manager
             </Menu.Item>
           </Link>
-          <Link to="/about">
+          <Link to="/admin/user">
             <Menu.Item
               eventKey="about"
               icon={<UserOutlined />}
               onClick={() => setCurrent('about')}
             >
-              About
-            </Menu.Item>
-          </Link>
-            <Link to="/posts">
-            <Menu.Item
-              eventKey="posts"
-              icon={<ProfileOutlined />}
-              onClick={() => setCurrent('posts')}
-            >
-              Posts
+              User Manager
             </Menu.Item>
           </Link>
             <Link to="/login">
