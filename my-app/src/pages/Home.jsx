@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Space, Table, Button, Modal, Form, Input, message, Popconfirm } from 'antd';
+import {Space, Table, Button, Modal, Form, Input, message, notification, Popconfirm} from 'antd';
 import axios from 'axios';
 
 const Home = () => {
@@ -61,12 +61,32 @@ const Home = () => {
             message.error('Error deleting image');
         }
     };
+    const handleFile = (event) => {
+        const file = event.target.files[0];
 
-    const addUserImage = async (userId, imageData) => {
+        if (!file) {
+            return;
+        }
+        const fileType = file.name.split('.').pop().toLowerCase();
+
+        if (fileType === 'hdr') {
+            setHdrFile(file);
+        } else if (fileType === 'img') {
+            setImgFile(file);
+        } else {
+            // Show an error notification for unsupported file types
+            notification.error({
+                message: 'Error',
+                description: 'Unsupported file type. Please choose an HDR (.hdr) or IMG (.img) file.',
+            });
+        }
+    };
+
+    const addUserImage = async (userId) => {
         try {
             const formData = new FormData();
-            formData.append('header', imageData.hdr);
-            formData.append('image', imageData.img);
+            formData.append('header', hdrFile);
+            formData.append('image', imgFile);
 
             const config = {
                 headers: {
@@ -200,6 +220,8 @@ const Home = () => {
         setAddImageModalVisible(false);
     };
 
+
+
     return (
         <>
             <Table
@@ -216,22 +238,12 @@ const Home = () => {
                 onOk={handleAddImageOk}
                 onCancel={handleAddImageCancel}
             >
-                <Form form={form} layout="vertical" name="addImageForm">
-                    <Form.Item
-                        name="hdrFile"
-                        label="HDR File"
-                        rules={[{ required: true, message: 'Please upload an HDR file!' }]}
-                    >
-                        <Input type="file" accept=".hdr" />
-                    </Form.Item>
-                    <Form.Item
-                        name="imgFile"
-                        label="IMG File"
-                        rules={[{ required: true, message: 'Please upload an IMG file!' }]}
-                    >
-                        <Input type="file" accept=".img" />
-                    </Form.Item>
-                </Form>
+                <p>HDR file</p>
+                {/* Choose HDR file input */}
+                <input type="file" accept=".hdr" onChange={handleFile}/>
+                <p>IMG file</p>
+                {/* Choose IMG file input */}
+                <input type="file" accept=".img" onChange={handleFile}/>
             </Modal>
         </>
     );
