@@ -42,7 +42,7 @@ const AllRoutes = () => {
       element: <FullLayout />,
       children: [
         {
-          path: '/admin/userdata',
+          path: '/',
           element: <LoadComponent component={HomePage} />
         },
         {

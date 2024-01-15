@@ -44,7 +44,7 @@ const Login = () => {
             let decodedToken = jwtDecode(data.token);
             // console.log(decodedToken);
             if (decodedToken.groups[0] === 'ADMIN') {
-                navigate('/admin/userdata')
+                navigate('/')
             } else {
                     const config = {
                         headers: {

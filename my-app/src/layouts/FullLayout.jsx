@@ -63,7 +63,7 @@ const FullLayout = () => {
           mode="inline"
           selectedKeys={[current]}
         >
-          <Link to="/admin/userdata">
+          <Link to="/">
             <Menu.Item
               eventKey="home"
               icon={<ProfileOutlined />}
