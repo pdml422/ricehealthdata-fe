@@ -159,7 +159,7 @@ const UserHome = () => {
                 dataIndex: 'path',
                 fixed: 'left',
                 render: (text) => {
-                    const fileName = text.split('/').pop(); // Extracts the filename from the path
+                    const fileName = text.split('/').pop(``); // Extracts the filename from the path
                     return <span>{fileName}</span>;
                 },
             },
