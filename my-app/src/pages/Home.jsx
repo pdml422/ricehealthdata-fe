@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Space, Table, Button, Modal, Form, Input, message } from 'antd';
+import { Space, Table, Button, Modal, Form, Input, message, Popconfirm } from 'antd';
 import axios from 'axios';
 
 const Home = () => {
@@ -127,9 +127,14 @@ const Home = () => {
                 dataIndex: 'operation',
                 render: (_, record) => (
                     <Space size="middle">
-                        <Button type="link" onClick={() => deleteUserImage(record.id)} style={{ color: 'red' }}>
-                            Delete
-                        </Button>
+                        <Popconfirm
+                            title="Are you sure to delete this file?"
+                            onConfirm={() => deleteUserImage(record.id)}
+                            okText="Yes"
+                            cancelText="No"
+                        >
+                            <a style={{ color: 'red' }}> Delete </a>
+                        </Popconfirm>
                     </Space>
                 ),
             },
