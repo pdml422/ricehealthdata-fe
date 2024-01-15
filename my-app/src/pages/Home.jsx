@@ -121,6 +121,8 @@ const Home = () => {
     useEffect(() => {
         const fetchData = async () => {
             await getUsers();
+            // Fetch image data for all users
+            await Promise.all(data.map((user) => fetchImageAndSetData(user.id)));
         };
 
         fetchData();
@@ -128,9 +130,16 @@ const Home = () => {
 
     useEffect(() => {
         const fetchImageForUser = async (userId) => {
-            // Check if the user has associated image data
-            if (!data.some((user) => user.id === userId && user.files)) {
+            try {
+                // Check if the user has associated image data
+                const user = data.find((user) => user.id === userId);
+                if (user && user.files) {
+                    return;
+                }
+
                 await fetchImageAndSetData(userId);
+            } catch (error) {
+                console.error('Error fetching image data:', error);
             }
         };
 
