@@ -292,7 +292,7 @@
                     <Space size="middle">
                         <a onClick={() => showModal(record)}>Edit</a>
                         <a style={{ color: 'red' }} onClick={() => showDeleteModal(record)}>
-                            Delete
+                            Deleted
                         </a>
                     </Space>
                 ),
