@@ -7,6 +7,7 @@ const Home = () => {
     const [form] = Form.useForm();
     const [hdrFile, setHdrFile] = useState(null);
     const [imgFile, setImgFile] = useState(null);
+    const [fetchedUsers, setFetchedUsers] = useState([]);
 
     const getUsers = async () => {
         try {
@@ -49,11 +50,16 @@ const Home = () => {
                 },
             };
 
-            // Assuming your delete API endpoint is available at http://100.96.184.148:8080/image/hyper/{imageId}
             await axios.delete(`http://100.96.184.148:8080/image/hyper/${imageId}`, config);
 
-            // After deletion, refetch the user data
-            await getUsers();
+            // Update data with the deleted image removed immediately
+            setData((prevData) => {
+                const newData = prevData.map((user) => ({
+                    ...user,
+                    files: user.files ? user.files.filter((file) => file.id !== imageId) : [],
+                }));
+                return newData;
+            });
 
             message.success('Image deleted successfully');
         } catch (error) {
@@ -61,6 +67,7 @@ const Home = () => {
             message.error('Error deleting image');
         }
     };
+
     const handleFile = (event) => {
         const file = event.target.files[0];
 
@@ -85,7 +92,6 @@ const Home = () => {
     const addUserImage = async (userId) => {
         try {
             if (!hdrFile || !imgFile) {
-                // Show a notification or alert that both files are required
                 notification.error({
                     message: 'Error',
                     description: 'Please choose both an HDR (.hdr) and an IMG (.img) file to upload.',
@@ -101,15 +107,29 @@ const Home = () => {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
                     UserId: userId,
-                    'Content-Type': 'multipart/form-data', // Ensure the Content-Type is set to multipart/form-data
+                    'Content-Type': 'multipart/form-data',
                 },
             };
 
-            // Assuming your add image API endpoint is available at http://100.96.184.148:8080/users/{userId}/image
+            // Asynchronous upload
             await axios.post(`http://100.96.184.148:8080/image/hyper`, formData, config);
 
-            // After adding, refetch the user data
-            await getUsers();
+            // Immediately fetch and update image data for the user
+            await fetchImageAndSetData(userId);
+
+            // Update data with the added image immediately
+            setData((prevData) => {
+                const newData = prevData.map((user) => {
+                    if (user.id === userId) {
+                        return {
+                            ...user,
+                            files: [...(user.files || []), { /* Add properties for the new image */ }],
+                        };
+                    }
+                    return user;
+                });
+                return newData;
+            });
 
             message.success('Image added successfully');
         } catch (error) {
@@ -120,9 +140,22 @@ const Home = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            await getUsers();
-            // Fetch image data for all users
-            await Promise.all(data.map((user) => fetchImageAndSetData(user.id)));
+            try {
+                const usersResponse = await axios.get('http://100.96.184.148:8080/users', {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+                    },
+                });
+                const users = usersResponse.data;
+
+                setData(users);
+
+                // Fetch image data for all users concurrently
+                const fetchImagePromises = users.map((user) => fetchImageAndSetData(user.id));
+                await Promise.all(fetchImagePromises);
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+            }
         };
 
         fetchData();
@@ -137,17 +170,23 @@ const Home = () => {
                     return;
                 }
 
-                await fetchImageAndSetData(userId);
+                // Check if image data has already been fetched for this user
+                if (!fetchedUsers.includes(userId)) {
+                    await fetchImageAndSetData(userId);
+
+                    // Update the fetchedUsers state to mark this user as fetched
+                    setFetchedUsers((prevUsers) => [...prevUsers, userId]);
+                }
             } catch (error) {
                 console.error('Error fetching image data:', error);
             }
         };
 
         if (data.length > 0) {
-            const userId = data[1].id;
+            const userId = data[1].id; // Assuming you want to fetch images for the second user
             fetchImageForUser(userId);
         }
-    }, [data]);
+    }, [data, fetchedUsers]);
 
     const expandedRowRender = (record) => {
         const columns = [
