@@ -14,6 +14,7 @@ const AboutPage = React.lazy(() => import('./pages/About'))
 const UserHomePage = React.lazy(() => import('./pages/UserHome'))
 const UserPostPage = React.lazy(() => import('./pages/UserPost'))
 const UserAboutPage = React.lazy(() => import('./pages/UserAbout'))
+const UserProfilePage = React.lazy(() => import('./pages/UserProfile'))
 
 const loading = () => <div className="" />
 
@@ -65,7 +66,11 @@ const AllRoutes = () => {
         {
           path: '/users/data',
           element: <LoadComponent component={UserPostPage} />
-        }
+        },
+        {
+          path: '/users/profile',
+          element: <LoadComponent component={UserProfilePage} />
+        },
       ]
     }
   ])

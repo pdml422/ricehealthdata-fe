@@ -6,7 +6,7 @@ import {
     ProfileOutlined,
     ArrowLeftOutlined,
     PictureOutlined,
-    FileOutlined
+    FileOutlined, FolderOutlined
 } from '@ant-design/icons'
 import { Layout, Menu, Button } from 'antd'
 import { Navigate, Outlet, Link } from 'react-router-dom'
@@ -84,10 +84,19 @@ const UserLayout = () => {
                     <Link to="users/data">
                         <Menu.Item
                             eventKey="posts"
-                            icon={<ProfileOutlined />}
+                            icon={<FolderOutlined />}
                             onClick={() => setCurrent('posts')}
                         >
                             Statistical Data
+                        </Menu.Item>
+                    </Link>
+                    <Link to="users/profile">
+                        <Menu.Item
+                            eventKey="profile"
+                            icon={<ProfileOutlined />}
+                            onClick={() => setCurrent('profile')}
+                        >
+                            Profile
                         </Menu.Item>
                     </Link>
                     <Link to="/login">
