@@ -3,7 +3,7 @@ import { Card, Space, Form, Input, notification } from 'antd';
 import axios from 'axios';
 
 const UserProfile: React.FC = () => {
-    const [userData, setUserData] = useState({ user: { name: '', email: '', role: '' } });
+    const [userData, setUserData] = useState([]);
 
     const getUserData = async () => {
         try {
@@ -16,7 +16,6 @@ const UserProfile: React.FC = () => {
 
             if (response && response.data) {
                 setUserData(response.data);
-                console.log(response.data);
             } else {
                 // Handle the case where the response or response.data is undefined
                 notification.error({
@@ -41,21 +40,20 @@ const UserProfile: React.FC = () => {
             <Card title="Profile" extra={<a href="#">Edit</a>} style={{ width: 800 }}>
                 <Form.Item
                     label="Name"
-                    initialValue={userData.user ? userData.user.name : ''}
                 >
-                    <Input disabled />
+
+                    {userData.name}
                 </Form.Item>
                 <Form.Item
                     label="Mail"
-                    initialValue={userData.user ? userData.user.email : ''}
+
                 >
-                    <Input disabled />
+                        {userData.email}
                 </Form.Item>
                 <Form.Item
                     label="Role"
-                    initialValue={userData.user ? userData.user.role : ''}
                 >
-                    <Input disabled />
+                    {userData.role}
                 </Form.Item>
             </Card>
         </Space>
