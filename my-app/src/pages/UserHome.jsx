@@ -180,6 +180,9 @@ const UserHome = () => {
                 width: 100,
                 render: (text, record) => (
                     <Space size="middle">
+                        <a style={{ color: 'red' }} onClick={() => showDeleteModal(record)}>
+                            Delete
+                        </a>
                         {record.type === 'header' && ( // Conditionally render the View button for 'hdr' type
                             <Link to={`/users/image`}>
                                 <a style={{ color: 'blue' }} onClick={() => viewImage(record)}
@@ -188,9 +191,6 @@ const UserHome = () => {
                                 </a>
                             </Link>
                         )}
-                        <a style={{ color: 'red' }} onClick={() => showDeleteModal(record)}>
-                            Delete
-                        </a>
                     </Space>
                 ),
 
