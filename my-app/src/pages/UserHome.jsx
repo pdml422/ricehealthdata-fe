@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import {Button, Modal, notification, Space, Table} from 'antd';
+import {Link} from "react-router-dom";
 
 const UserHome = () => {
     const [hdrFile, setHdrFile] = useState(null);
@@ -148,6 +149,11 @@ const UserHome = () => {
     };
 
 
+    const viewImage= async (values) => {
+        localStorage.setItem('id', values.id)
+    }
+
+
     useEffect(() => {
         fetchImageFile();
     }, []);
@@ -174,6 +180,14 @@ const UserHome = () => {
                 width: 100,
                 render: (text, record) => (
                     <Space size="middle">
+                        {record.type === 'header' && ( // Conditionally render the View button for 'hdr' type
+                            <Link to={`/users/image`}>
+                                <a style={{ color: 'blue' }} onClick={() => viewImage(record)}
+                                >
+                                    View
+                                </a>
+                            </Link>
+                        )}
                         <a style={{ color: 'red' }} onClick={() => showDeleteModal(record)}>
                             Delete
                         </a>

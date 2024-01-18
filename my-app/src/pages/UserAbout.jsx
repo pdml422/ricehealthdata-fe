@@ -163,6 +163,7 @@ const UserAbout = () => {
                 }
             }
             await axios.post(`http://100.96.184.148:8080/image/map/add`,values, config);
+            window.location.reload();
             notification.success({
                 message: 'Data created successfully',
             })
@@ -327,7 +328,7 @@ const UserAbout = () => {
                 <div style={{marginLeft: 'auto'}}>
                     <div style={ButtonStyle}>
                     <Button type={toggleState ? 'primary' : 'default'} onClick={handleToggle}>
-                        {toggleState ? 'Turned On' : 'Turned Off'}
+                        {toggleState ? 'Edit Mode: On' : 'Edit Mode: Off'}
                     </Button>
                     <Button onClick={() => showAddRGBModal()} type="primary">Get RGB</Button>
                     </div>
