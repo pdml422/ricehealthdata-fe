@@ -48,9 +48,6 @@ const FullLayout = () => {
   return (
     <StyledLayout>
       <Sider
-        trigger={null}
-        collapsible
-        collapsed={collapsed}
       >
         <StyledLogo>
           {/*<img*/}

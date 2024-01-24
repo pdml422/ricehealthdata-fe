@@ -247,22 +247,7 @@ const UserAbout = () => {
 
 
 
-    const handleImageClick = function(e) {
-        const ratioX = e.target.naturalWidth / scaledWidth;
-        const ratioY = e.target.naturalHeight / scaledHeight;
 
-        const domX = e.clientX - e.target.getBoundingClientRect().left;
-        const domY = e.clientY  - e.target.getBoundingClientRect().top;
-
-        const imgX = Math.floor(domX * ratioX);
-        const imgY = Math.floor(domY * ratioY);
-
-        setX(imgX)
-        setY(imgY)
-        if (toggleState) {
-            showAddModal();
-        }
-    };
 
     const handleMarkerClick = async (markerData) => {
         try {
@@ -293,15 +278,39 @@ const UserAbout = () => {
         fetchIdImage();
     }, []);
 
-    const scaledWidth = 8029 / 5.5;
-    const scaledHeight = 8609 / 5.5;
+
 
     const [imageIdData, setImageIdData] = useState([]);
+
+
     const handleMenuItemClick = (id) => {
         localStorage.setItem('id', id);
         window.location.reload();
     };
 
+    const scaledWidth = localStorage.getItem('id') === "1" ? 8029 / 5.8 : 6370 / 4.6;
+    const scaledHeight = localStorage.getItem('id') === "1" ? 8609 / 5.8 : 7650 / 4.6
+
+    const handleImageClick = function(e) {
+        const ratioX = e.target.naturalWidth / scaledWidth;
+        const ratioY = e.target.naturalHeight / scaledHeight;
+
+        const domX = e.clientX - e.target.getBoundingClientRect().left;
+        const domY = e.clientY  - e.target.getBoundingClientRect().top;
+
+        const imgX = Math.floor(domX * ratioX);
+        const imgY = Math.floor(domY * ratioY);
+
+        console.log(imgX, imgY)
+
+        setX(imgX)
+        setY(imgY)
+        if (toggleState) {
+            showAddModal();
+        }
+    };
+
+    const divisionFactor = localStorage.getItem('id') === "1" ? 5.8 : 4.6;
 
     const items = imageIdData.map((item) => {
         const pathParts = item.path.split('/');
@@ -343,8 +352,8 @@ const UserAbout = () => {
                     const {x, y,} = marker;
 
                     const markerPosition = {
-                        top: y / 5.5,
-                        left: x / 5.5,
+                        top: y / divisionFactor,
+                        left: x / divisionFactor,
                     };
 
                     return (
@@ -362,8 +371,8 @@ const UserAbout = () => {
                         >
                             <div
                                 style={{
-                                    width: '10px',
-                                    height: '10px',
+                                    width: '8px',
+                                    height: '8px',
                                     backgroundColor: 'red',
                                     borderRadius: '50%',
                                 }}
@@ -376,10 +385,11 @@ const UserAbout = () => {
                 {/* Custom Popup */}
                 {popupOpen && selectedMarker && (
                     <div
+
                         style={{
                             position: 'absolute',
-                            top: selectedMarker.y / 5.5 - 20,
-                            left: selectedMarker.x / 5.5 + 20,
+                            top: selectedMarker.y / divisionFactor - 20,
+                            left: selectedMarker.x / divisionFactor + 20,
                             backgroundColor: 'white',
                             padding: '10px',
                             borderRadius: '5px',
