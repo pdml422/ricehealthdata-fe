@@ -35,10 +35,11 @@ const UserHome = () => {
 
     const handleUploadOk = async () => {
         setIsUploading(true);
+        setIsUploadModalOpen(false);
 
         try {
             await handleUploadFiles();
-            setIsUploadModalOpen(false);
+
         } finally {
             setIsUploading(false);
         }

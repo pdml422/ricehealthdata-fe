@@ -4,6 +4,8 @@ import axios from 'axios';
 import {Button, Form, Input, Modal, notification, Dropdown} from "antd";
 
 const UserAbout = () => {
+
+    const divisionFactor = localStorage.getItem('id') === "1" ? 5.8 : 4.6;
     const [data, setData] = useState([]);
     const [image, setImage] = useState('');
     const [markers, setMarkers] = useState([]);
@@ -13,6 +15,8 @@ const UserAbout = () => {
     const [selectedRGB, setSelectedRGB] = useState(null);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [isModalConfirmOpen, setIsModalConfirmOpen] = useState(false);
+    // const [newWidth, setNewWidth] = useState(localStorage.getItem('width') / divisionFactor);
+    // const [newHeight, setNewHeight] = useState(localStorage.getItem('height') / divisionFactor);
 
     const [x, setX] = useState()
     const [y, setY] = useState()
@@ -188,6 +192,26 @@ const UserAbout = () => {
         }
     };
 
+
+    const fetchImageResolution = async () => {
+        try {
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+                },
+            };
+
+            const response = await axios.get(`http://100.96.184.148:8080/image/resolution/${localStorage.getItem('id')}`, config);
+            // setNewWidth(response.data.width);
+            // setNewHeight(response.data.height);
+            localStorage.setItem('width', response.data.width / divisionFactor);
+            localStorage.setItem('height', response.data.height / divisionFactor);
+            console.log(response.data.width, response.data.height)
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
     const fetchMarkers = async () => {
         try {
             const config = {
@@ -245,10 +269,6 @@ const UserAbout = () => {
         setPopupOpen(!popupOpen);
     };
 
-
-
-
-
     const handleMarkerClick = async (markerData) => {
         try {
             const configHeader = {
@@ -276,24 +296,16 @@ const UserAbout = () => {
         fetchImage(addedImageData);
         fetchMarkers();
         fetchIdImage();
+        fetchImageResolution();
     }, []);
 
 
 
     const [imageIdData, setImageIdData] = useState([]);
 
-
-    const handleMenuItemClick = (id) => {
-        localStorage.setItem('id', id);
-        window.location.reload();
-    };
-
-    const scaledWidth = localStorage.getItem('id') === "1" ? 8029 / 5.8 : 6370 / 4.6;
-    const scaledHeight = localStorage.getItem('id') === "1" ? 8609 / 5.8 : 7650 / 4.6
-
     const handleImageClick = function(e) {
-        const ratioX = e.target.naturalWidth / scaledWidth;
-        const ratioY = e.target.naturalHeight / scaledHeight;
+        const ratioX = e.target.naturalWidth / localStorage.getItem('height');
+        const ratioY = e.target.naturalHeight / localStorage.getItem('width');
 
         const domX = e.clientX - e.target.getBoundingClientRect().left;
         const domY = e.clientY  - e.target.getBoundingClientRect().top;
@@ -310,7 +322,12 @@ const UserAbout = () => {
         }
     };
 
-    const divisionFactor = localStorage.getItem('id') === "1" ? 5.8 : 4.6;
+    const handleMenuItemClick = (id) => {
+        localStorage.setItem('id', id);
+        window.location.reload();
+    };
+
+
 
     const items = imageIdData.map((item) => {
         const pathParts = item.path.split('/');
@@ -345,7 +362,7 @@ const UserAbout = () => {
             </div>
 
             <div style={{position: 'relative', display: 'flex'}}>
-                <img onClick={handleImageClick} src={image} alt="Map" width={scaledWidth} height={scaledHeight}/>
+                <img onClick={handleImageClick} src={image} alt="Map" width={localStorage.getItem('height')} height={localStorage.getItem('width')}/>
 
                 {/* Markers */}
                 {markers.map((marker, index) => {
