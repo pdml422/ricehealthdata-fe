@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import {Button, Modal, notification, Space, Table} from 'antd';
-import {Link} from "react-router-dom";
+import { Button, Modal, notification, Space, Table, Spin } from 'antd';
+import { Link } from 'react-router-dom';
 
 const UserHome = () => {
     const [hdrFile, setHdrFile] = useState(null);
@@ -10,13 +10,14 @@ const UserHome = () => {
     const [selectedData, setSelectedData] = useState(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+    const [isUploading, setIsUploading] = useState(false);
 
     const addFileButton = {
         display: 'flex',
         gap: '5px',
         marginBottom: '16px',
-        justifyContent: 'flex-end'
-    }
+        justifyContent: 'flex-end',
+    };
 
     const showDeleteModal = (stadata) => {
         setSelectedData(stadata);
@@ -33,8 +34,14 @@ const UserHome = () => {
     };
 
     const handleUploadOk = async () => {
-        await handleUploadFiles()
-        setIsUploadModalOpen(false);
+        setIsUploading(true);
+
+        try {
+            await handleUploadFiles();
+            setIsUploadModalOpen(false);
+        } finally {
+            setIsUploading(false);
+        }
     };
 
     const handleCancel = () => {
@@ -99,7 +106,6 @@ const UserHome = () => {
                 description: 'Files uploaded successfully.',
             });
             await fetchImageFile();
-
         } catch (error) {
             console.error('Error uploading files:', error.response?.data || error.message);
 
@@ -108,6 +114,8 @@ const UserHome = () => {
                 message: 'Error',
                 description: 'Failed to upload files. Please try again.',
             });
+        } finally {
+            setIsUploading(false);
         }
     };
 
@@ -121,8 +129,8 @@ const UserHome = () => {
             };
 
             const response = await axios.get(`http://100.96.184.148:8080/image/hyper/${localStorage.getItem('userId')}`, config);
-            console.log(response.data)
-            setData(response.data)
+            console.log(response.data);
+            setData(response.data);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -148,58 +156,51 @@ const UserHome = () => {
         }
     };
 
-
-    const viewImage= async (values) => {
-        localStorage.setItem('id', values.id)
-    }
-
+    const viewImage = async (values) => {
+        localStorage.setItem('id', values.id);
+    };
 
     useEffect(() => {
         fetchImageFile();
     }, []);
 
-        const columns  = [
-            {
-                title: 'File',
-                width: 100,
-                dataIndex: 'path',
-                fixed: 'left',
-                render: (text) => {
-                    const fileName = text.split('/').pop(``); // Extracts the filename from the path
-                    return <span>{fileName}</span>;
-                },
+    const columns = [
+        {
+            title: 'File',
+            width: 100,
+            dataIndex: 'path',
+            fixed: 'left',
+            render: (text) => {
+                const fileName = text.split('/').pop(``); // Extracts the filename from the path
+                return <span>{fileName}</span>;
             },
-            {
-                title: 'Type',
-                dataIndex: 'type',
-                width: 120
-            },
-            {
-                title: 'Action',
-                fixed: 'right',
-                width: 100,
-                render: (text, record) => (
-                    <Space size="middle">
-                        <a style={{ color: 'red' }} onClick={() => showDeleteModal(record)}>
-                            Delete
-                        </a>
-                        {record.type === 'header' && ( // Conditionally render the View button for 'hdr' type
-                            <Link to={`/users/image`}>
-                                <a style={{ color: 'blue' }} onClick={() => viewImage(record)}
-                                >
-                                    View
-                                </a>
-                            </Link>
-                        )}
-                    </Space>
-                ),
-
-            },
-        ];
-
-
-
-
+        },
+        {
+            title: 'Type',
+            dataIndex: 'type',
+            width: 120,
+        },
+        {
+            title: 'Action',
+            fixed: 'right',
+            width: 100,
+            render: (text, record) => (
+                <Space size="middle">
+                    <a style={{ color: 'red' }} onClick={() => showDeleteModal(record)}>
+                        Delete
+                    </a>
+                    {record.type === 'header' && (
+                        // Conditionally render the View button for 'hdr' type
+                        <Link to={`/users/image`}>
+                            <a style={{ color: 'blue' }} onClick={() => viewImage(record)}>
+                                View
+                            </a>
+                        </Link>
+                    )}
+                </Space>
+            ),
+        },
+    ];
 
     return (
         <>
@@ -210,12 +211,14 @@ const UserHome = () => {
                 </Button>
             </div>
 
-            <Table
-                columns={columns}
-                dataSource={data}
-                scroll={{ x: 1500 }}
-                sticky={{ offsetHeader: 64 }}
-            />
+            <Table columns={columns} dataSource={data} scroll={{ x: 1500 }} sticky={{ offsetHeader: 64 }} />
+
+            {isUploading && (
+                <div className="loading-screen">
+                    {/* Add a loading indicator or message */}
+                    <Spin tip="Uploading..." />
+                </div>
+            )}
 
             {selectedData && (
                 <Modal
@@ -236,10 +239,10 @@ const UserHome = () => {
             >
                 <p>HDR file</p>
                 {/* Choose HDR file input */}
-                <input type="file" accept=".hdr" onChange={handleFileChange}/>
+                <input type="file" accept=".hdr" onChange={handleFileChange} />
                 <p>IMG file</p>
                 {/* Choose IMG file input */}
-                <input type="file" accept=".img" onChange={handleFileChange}/>
+                <input type="file" accept=".img" onChange={handleFileChange} />
             </Modal>
         </>
     );
