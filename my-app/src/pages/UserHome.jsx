@@ -12,15 +12,32 @@ const UserHome = () => {
     const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
     const [isUploading, setIsUploading] = useState(false);
 
-    const addFileButton = {
+    const addFileButtonStyle = {
         display: 'flex',
         gap: '5px',
         marginBottom: '16px',
         justifyContent: 'flex-end',
     };
 
-    const showDeleteModal = (stadata) => {
-        setSelectedData(stadata);
+    const loadingOverlayStyle = {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        background: 'rgba(0, 0, 0, 0.5)', // Darker background
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 1000,
+    };
+
+    const loadingOverlaySpinStyle = {
+        fontSize: '36px', // Larger spinner size
+    };
+
+    const showDeleteModal = (selectedItem) => {
+        setSelectedData(selectedItem);
         setIsDeleteModalOpen(true);
     };
 
@@ -65,7 +82,6 @@ const UserHome = () => {
         } else if (fileType === 'img') {
             setImgFile(file);
         } else {
-            // Show an error notification for unsupported file types
             notification.error({
                 message: 'Error',
                 description: 'Unsupported file type. Please choose an HDR (.hdr) or IMG (.img) file.',
@@ -76,7 +92,6 @@ const UserHome = () => {
     const handleUploadFiles = async () => {
         try {
             if (!hdrFile || !imgFile) {
-                // Show a notification or alert that both files are required
                 notification.error({
                     message: 'Error',
                     description: 'Please choose both an HDR (.hdr) and an IMG (.img) file to upload.',
@@ -84,12 +99,9 @@ const UserHome = () => {
                 return;
             }
 
-            // Continue with the upload logic...
-
-            // Example: Construct FormData and make a POST request using Axios
             const formData = new FormData();
-            formData.append('header', hdrFile); // 'hdr' is the key for HDR file
-            formData.append('image', imgFile); // 'image' is the key for IMG file
+            formData.append('header', hdrFile);
+            formData.append('image', imgFile);
 
             const response = await axios.post('http://100.96.184.148:8080/image/hyper', formData, {
                 headers: {
@@ -99,18 +111,15 @@ const UserHome = () => {
                 },
             });
 
-            // Handle the response...
-
-            // Show a success notification
             notification.success({
                 message: 'Success',
                 description: 'Files uploaded successfully.',
             });
+
             await fetchImageFile();
         } catch (error) {
             console.error('Error uploading files:', error.response?.data || error.message);
 
-            // Show an error notification
             notification.error({
                 message: 'Error',
                 description: 'Failed to upload files. Please try again.',
@@ -130,21 +139,20 @@ const UserHome = () => {
             };
 
             const response = await axios.get(`http://100.96.184.148:8080/image/hyper/${localStorage.getItem('userId')}`, config);
-            console.log(response.data);
             setData(response.data);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
     };
 
-    const deleteImageFile = async (stadata) => {
+    const deleteImageFile = async (selectedItem) => {
         try {
             const configHeader = {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
                 },
             };
-            await axios.delete(`http://100.96.184.148:8080/image/hyper/${stadata.id}`, configHeader);
+            await axios.delete(`http://100.96.184.148:8080/image/hyper/${selectedItem.id}`, configHeader);
             await fetchImageFile();
             notification.success({
                 message: 'Data deleted successfully',
@@ -172,7 +180,7 @@ const UserHome = () => {
             dataIndex: 'path',
             fixed: 'left',
             render: (text) => {
-                const fileName = text.split('/').pop(``); // Extracts the filename from the path
+                const fileName = text.split('/').pop(``);
                 return <span>{fileName}</span>;
             },
         },
@@ -191,7 +199,6 @@ const UserHome = () => {
                         Delete
                     </a>
                     {record.type === 'header' && (
-                        // Conditionally render the View button for 'hdr' type
                         <Link to={`/users/image`}>
                             <a style={{ color: 'blue' }} onClick={() => viewImage(record)}>
                                 View
@@ -205,8 +212,7 @@ const UserHome = () => {
 
     return (
         <>
-            <div style={addFileButton}>
-                {/* Upload Files button */}
+            <div style={addFileButtonStyle}>
                 <Button onClick={showUploadModal} type="primary">
                     Upload Files
                 </Button>
@@ -215,9 +221,8 @@ const UserHome = () => {
             <Table columns={columns} dataSource={data} scroll={{ x: 1500 }} sticky={{ offsetHeader: 64 }} />
 
             {isUploading && (
-                <div className="loading-screen">
-                    {/* Add a loading indicator or message */}
-                    <Spin tip="Uploading..." />
+                <div style={loadingOverlayStyle}>
+                    <Spin tip="Uploading..." style={loadingOverlaySpinStyle} />
                 </div>
             )}
 
@@ -239,10 +244,8 @@ const UserHome = () => {
                 onCancel={handleCancel}
             >
                 <p>HDR file</p>
-                {/* Choose HDR file input */}
                 <input type="file" accept=".hdr" onChange={handleFileChange} />
                 <p>IMG file</p>
-                {/* Choose IMG file input */}
                 <input type="file" accept=".img" onChange={handleFileChange} />
             </Modal>
         </>
