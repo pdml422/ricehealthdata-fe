@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import type { MenuProps } from 'antd';
 import axios from 'axios';
+import { CloseOutlined } from '@ant-design/icons';
 import {Button, Form, Input, Modal, notification, Dropdown} from "antd";
 
 const UserAbout = () => {
@@ -413,24 +414,16 @@ const UserAbout = () => {
                             zIndex: 1000,
                         }}
                     >
-                        <button
+                        <Button
                             style={{
                                 position: 'absolute',
                                 top: 5,
                                 right: 5,
                                 padding: 5,
-                                cursor: 'pointer',
-                                backgroundColor: 'transparent',
-                                border: 'none',
-                                outline: 'none',
-                                fontSize: '16px',
-                                fontWeight: 'bold',
-                                color: 'black',
                             }}
                             onClick={togglePopup}
-                        >
-                            X
-                        </button>
+                            icon={<CloseOutlined />}
+                        />
                         <p>
                             Replicate: {data.replicate} <br />
                             SubReplicate: {data.subReplicate} <br />
@@ -448,7 +441,7 @@ const UserAbout = () => {
                 )}
             </div>
 
-            <Modal
+                <Modal
                 title="Add RGB"
                 visible={isAddRGBModalOpen}
                 onOk={handleAddRGBOk}
