@@ -402,7 +402,6 @@ const UserAbout = () => {
                 {/* Custom Popup */}
                 {popupOpen && selectedMarker && (
                     <div
-
                         style={{
                             position: 'absolute',
                             top: selectedMarker.y / divisionFactor - 20,
@@ -413,21 +412,37 @@ const UserAbout = () => {
                             boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)',
                             zIndex: 1000,
                         }}
-                        onClick={togglePopup}
                     >
+                        <button
+                            style={{
+                                position: 'absolute',
+                                top: 5,
+                                right: 5,
+                                padding: 5,
+                                cursor: 'pointer',
+                                backgroundColor: 'transparent',
+                                border: 'none',
+                                outline: 'none',
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                color: 'black',
+                            }}
+                            onClick={togglePopup}
+                        >
+                            X
+                        </button>
                         <p>
-                            Replicate: {data.replicate} <br/>
-                            SubReplicate: {data.subReplicate} <br/>
-                            Date: {data.date} <br/>
-                            Chlorophyll: {data.chlorophyll} <br/>
-                            PConc: {data.PConc} <br/>
-                            KConc: {data.KConc} <br/>
-                            NConc: {data.NConc} <br/>
-                            WetWeight: {data.wetWeight} <br/>
-                            DriedWeight: {data.driedWeight} <br/>
-                            Moiture: {data.moiture} <br/>
-                            Digesion: {data.digesion} <br/>
-
+                            Replicate: {data.replicate} <br />
+                            SubReplicate: {data.subReplicate} <br />
+                            Date: {data.date} <br />
+                            Chlorophyll: {data.chlorophyll} <br />
+                            PConc: {data.PConc} <br />
+                            KConc: {data.KConc} <br />
+                            NConc: {data.NConc} <br />
+                            WetWeight: {data.wetWeight} <br />
+                            DriedWeight: {data.driedWeight} <br />
+                            Moiture: {data.moiture} <br />
+                            Digesion: {data.digesion} <br />
                         </p>
                     </div>
                 )}
