@@ -290,6 +290,7 @@ const Home = () => {
     };
 
     const handleAddImageOk = async () => {
+        setAddImageModalVisible(false);
         try {
             const values = await form.validateFields();
             const { hdrFile, imgFile } = values;
@@ -303,7 +304,7 @@ const Home = () => {
 
             // After the upload is complete, set loading to false and close the modal
             setIsUploading(false);
-            setAddImageModalVisible(false);
+
         } catch (error) {
             console.error('Error adding image:', error);
 
