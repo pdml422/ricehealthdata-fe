@@ -419,7 +419,10 @@ const UserAbout = () => {
                                 position: 'absolute',
                                 top: 5,
                                 right: 5,
-                                padding: 5,
+                                padding: 1,
+                                fontSize: '5px', // Adjust the font size as needed
+                                height: '20px', // Adjust the height as needed
+                                width: '20px',
                             }}
                             onClick={togglePopup}
                             icon={<CloseOutlined />}

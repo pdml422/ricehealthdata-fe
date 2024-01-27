@@ -75,7 +75,7 @@ const UserLayout = () => {
                             icon={<PictureOutlined />}
                             onClick={() => setCurrent('about')}
                         >
-                            Data Image
+                            Image Data
                         </Menu.Item>
                     </Link>
                     <Link to="users/data">
