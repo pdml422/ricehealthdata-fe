@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {Space, Table, Button, Modal, Form, Input, message, notification, Popconfirm} from 'antd';
+import {Space, Table, Button, Modal, Form, Input, message, notification, Popconfirm, Spin } from 'antd';
 import axios from 'axios';
 
 const Home = () => {
@@ -8,6 +8,37 @@ const Home = () => {
     const [hdrFile, setHdrFile] = useState(null);
     const [imgFile, setImgFile] = useState(null);
     const [fetchedUsers, setFetchedUsers] = useState([]);
+    const [isUploading, setIsUploading] = useState(false);
+
+    const loadingOverlayStyle = {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        background: 'rgba(0, 0, 0, 0.5)', // Darker background
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 1000,
+    };
+
+    const showLoadingOverlay = () => (
+        <div style={loadingOverlayStyle}>
+            <Spin tip="Uploading..." style={{ fontSize: '24px' }} />
+        </div>
+    );
+
+    const handleUploadOk = async () => {
+        setIsUploading(true);
+
+        try {
+            await handleAddImageOk();
+
+        } finally {
+            setIsUploading(false);
+        }
+    };
 
     const getUsers = async () => {
         try {
@@ -266,10 +297,20 @@ const Home = () => {
             // Assuming your image data structure contains 'hdr' and 'img' properties
             const imageData = { hdr: hdrFile, img: imgFile };
 
+            setIsUploading(true); // Set loading to true before starting the upload
+
             await addUserImage(currentUserId, imageData);
+
+            // After the upload is complete, set loading to false and close the modal
+            setIsUploading(false);
             setAddImageModalVisible(false);
         } catch (error) {
             console.error('Error adding image:', error);
+
+            // Handle error if necessary
+
+            // Ensure loading is set to false even in case of an error
+            setIsUploading(false);
         }
     };
 
@@ -281,6 +322,8 @@ const Home = () => {
 
     return (
         <>
+            {isUploading && showLoadingOverlay()}
+
             <Table
                 columns={columns}
                 expandable={{
