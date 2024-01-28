@@ -362,89 +362,92 @@ const UserAbout = () => {
                 </div>
             </div>
 
-            <div style={{position: 'relative', display: 'flex'}}>
-                <img onClick={handleImageClick} src={image} alt="Map" width={localStorage.getItem('height')} height={localStorage.getItem('width')}/>
+            <div style={{display: 'flex', justifyContent: 'center'}}>
+                <div style={{position: 'relative'}}>
+                    {/* Image */}
+                    <img onClick={handleImageClick} src={image} alt="Map" width={localStorage.getItem('height')}
+                         height={localStorage.getItem('width')}/>
 
-                {/* Markers */}
-                {markers.map((marker, index) => {
-                    const {x, y,} = marker;
+                    {/* Red dots */}
+                    {markers.map((marker, index) => {
+                        const {x, y} = marker;
 
-                    const markerPosition = {
-                        top: y / divisionFactor,
-                        left: x / divisionFactor,
-                    };
+                        const markerPosition = {
+                            top: y / divisionFactor,
+                            left: x / divisionFactor,
+                        };
 
-                    return (
-                        <div
-
-                            key={index}
-                            style={{
-                                position: 'absolute',
-                                top: markerPosition.top,
-                                left: markerPosition.left,
-                                transform: 'translate(-50%, -50%)',
-                                cursor: 'pointer',
-                            }}
-                            onClick={() => handleMarkerClick(marker)}
-                        >
+                        return (
                             <div
+                                key={index}
                                 style={{
-                                    width: '8px',
-                                    height: '8px',
-                                    backgroundColor: 'red',
-                                    borderRadius: '50%',
+                                    position: 'absolute',
+                                    top: markerPosition.top,
+                                    left: markerPosition.left,
+                                    transform: 'translate(-50%, -50%)',
+                                    cursor: 'pointer',
                                 }}
+                                onClick={() => handleMarkerClick(marker)}
                             >
+                                <div
+                                    style={{
+                                        width: '8px',
+                                        height: '8px',
+                                        backgroundColor: 'red',
+                                        borderRadius: '50%',
+                                    }}
+                                >
+                                </div>
                             </div>
-                        </div>
-                    );
-                })}
+                        );
+                    })}
 
-                {/* Custom Popup */}
-                {popupOpen && selectedMarker && (
-                    <div
-                        style={{
-                            position: 'absolute',
-                            top: selectedMarker.y / divisionFactor - 20,
-                            left: selectedMarker.x / divisionFactor + 20,
-                            backgroundColor: 'white',
-                            padding: '10px',
-                            borderRadius: '5px',
-                            boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)',
-                            zIndex: 1000,
-                        }}
-                    >
-                        <Button
+                    {/* Custom Popup */}
+                    {popupOpen && selectedMarker && (
+                        <div
                             style={{
                                 position: 'absolute',
-                                top: 5,
-                                right: 5,
-                                padding: 1,
-                                fontSize: '5px', // Adjust the font size as needed
-                                height: '20px', // Adjust the height as needed
-                                width: '20px',
+                                top: selectedMarker.y / divisionFactor - 20,
+                                left: selectedMarker.x / divisionFactor + 20,
+                                backgroundColor: 'white',
+                                padding: '10px',
+                                borderRadius: '5px',
+                                boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)',
+                                zIndex: 1000,
                             }}
-                            onClick={togglePopup}
-                            icon={<CloseOutlined />}
-                        />
-                        <p>
-                            Replicate: {data.replicate} <br />
-                            SubReplicate: {data.subReplicate} <br />
-                            Date: {data.date} <br />
-                            Chlorophyll: {data.chlorophyll} <br />
-                            PConc: {data.PConc} <br />
-                            KConc: {data.KConc} <br />
-                            NConc: {data.NConc} <br />
-                            WetWeight: {data.wetWeight} <br />
-                            DriedWeight: {data.driedWeight} <br />
-                            Moiture: {data.moiture} <br />
-                            Digesion: {data.digesion} <br />
-                        </p>
-                    </div>
-                )}
+                        >
+                            <Button
+                                style={{
+                                    position: 'absolute',
+                                    top: 5,
+                                    right: 5,
+                                    padding: 1,
+                                    fontSize: '5px', // Adjust the font size as needed
+                                    height: '20px', // Adjust the height as needed
+                                    width: '20px',
+                                }}
+                                onClick={togglePopup}
+                                icon={<CloseOutlined/>}
+                            />
+                            <p>
+                                Replicate: {data.replicate} <br/>
+                                SubReplicate: {data.subReplicate} <br/>
+                                Date: {data.date} <br/>
+                                Chlorophyll: {data.chlorophyll} <br/>
+                                PConc: {data.PConc} <br/>
+                                KConc: {data.KConc} <br/>
+                                NConc: {data.NConc} <br/>
+                                WetWeight: {data.wetWeight} <br/>
+                                DriedWeight: {data.driedWeight} <br/>
+                                Moiture: {data.moiture} <br/>
+                                Digesion: {data.digesion} <br/>
+                            </p>
+                        </div>
+                    )}
+                </div>
             </div>
 
-                <Modal
+            <Modal
                 title="Add RGB"
                 visible={isAddRGBModalOpen}
                 onOk={handleAddRGBOk}
