@@ -225,6 +225,10 @@ const Home = () => {
                 title: 'File',
                 dataIndex: 'path',
                 fixed: 'left',
+                render: (text) => {
+                    const fileName = text.split('/').pop(``);
+                    return <span>{fileName}</span>;
+                },
             },
             {
                 title: 'Type',
